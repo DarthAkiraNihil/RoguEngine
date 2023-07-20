@@ -5,8 +5,14 @@
 #ifndef ROGUENGINE_ENTITYTYPE_H
 #define ROGUENGINE_ENTITYTYPE_H
 
-enum EntityType {
-    FuckingSlave
-};
+namespace RoguEngine {
+    namespace GameModule {
+        namespace AuxiliaryPackage {
+            enum EntityType {
+                FuckingSlave
+            };
+        }
+    }
+}
 
 #endif //ROGUENGINE_ENTITYTYPE_H
