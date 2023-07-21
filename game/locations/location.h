@@ -2,7 +2,7 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <game/locations/tile.h>
-#include <game/auxiliary/auxiliary.h>
+#include "game/auxiliary/auxiliaryPackage.h"
 #include <game/entity/entity.h>
 #include <include/conio21/conio2.h>
 #include <iostream>
@@ -24,6 +24,8 @@ namespace RoguEngine {
                     Tile getTile(AuxiliaryPackage::Coordinates coordinates);
                     EntityPackage::Entity getEntityFromPlace(AuxiliaryPackage::Coordinates coordinates);
                     void moveEntity(AuxiliaryPackage::Coordinates oldCoordinates, AuxiliaryPackage::Coordinates newCoordinates);
+                    int getHeight();
+                    int getLength();
                     void setTile(Tile tile, AuxiliaryPackage::Coordinates coordinates);
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(AuxiliaryPackage::Coordinates entityCoordinates);
@@ -52,6 +54,14 @@ namespace RoguEngine {
                 throw std::string("FUCK1234");
             }
 
+            int Location::getHeight() {
+                return this->height;
+            }
+
+            int Location::getLength() {
+                return this->length;
+            }
+
             void Location::moveEntity(AuxiliaryPackage::Coordinates oldCoordinates, AuxiliaryPackage::Coordinates newCoordinates) {
                 for (int i = 0; i < this->locationEntities.size(); i++) {
                     if (this->locationEntities.at(i).getCoordinates() == oldCoordinates) {
@@ -77,13 +87,13 @@ namespace RoguEngine {
             void Location::render(AuxiliaryPackage::Coordinates placeToRender) {
                 for (int i = 0; i < this->height; i++) {
                     for (int j = 0; j < this->length; j++) {
-                        gotoxy(placeToRender.x + j, placeToRender.y + i);
+                        gotoxy(placeToRender.x + j + 1, placeToRender.y + i + 1);
                         std::wcout << this->locationMap[i][j].getChar();
                     }
                 }
                 for (int i = 0; i < this->locationEntities.size(); i++) {
                     EntityPackage::Entity temp = this->locationEntities.at(i);
-                    gotoxy(temp.getCoordinates().x, temp.getCoordinates().y);
+                    gotoxy(temp.getCoordinates().x + 1, temp.getCoordinates().y + 1);
                     std::wcout << temp.getSymbol();
                 }
             }

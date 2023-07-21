@@ -2,7 +2,7 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <iostream>
-#include <game/auxiliary/auxiliary.h>
+#include "game/auxiliary/auxiliaryPackage.h"
 
 #ifndef ROGUENGINE_TILE_H
 #define ROGUENGINE_TILE_H
@@ -14,23 +14,23 @@ namespace RoguEngine {
                 private:
                     wchar_t symbol;
                     std::wstring name;
-                    AuxiliaryPackage::Coordinates coordinates;
+                    //AuxiliaryPackage::Coordinates coordinates;
                     bool passedBy;
                 public:
                     Tile() = default;
-                    Tile(wchar_t symbol, std::wstring name, AuxiliaryPackage::Coordinates coordinates, bool isPassable);
+                    Tile(wchar_t symbol, std::wstring name, /*AuxiliaryPackage::Coordinates coordinates,*/ bool isPassable);
                     wchar_t getChar();
                     std::wstring getName();
-                    AuxiliaryPackage::Coordinates getCoordinates();
+                    //AuxiliaryPackage::Coordinates getCoordinates();
                     bool isPassable();
             };
 
 
 
-            Tile::Tile(wchar_t symbol, std::wstring name, AuxiliaryPackage::Coordinates coordinates, bool isPassable) {
+            Tile::Tile(wchar_t symbol, std::wstring name,/* AuxiliaryPackage::Coordinates coordinates,*/ bool isPassable) {
                 this->symbol = symbol;
                 this->name = name;
-                this->coordinates = coordinates;
+                //this->coordinates = coordinates;
                 this->passedBy = isPassable;
             }
 
@@ -42,9 +42,9 @@ namespace RoguEngine {
                 return this->name;
             }
 
-            AuxiliaryPackage::Coordinates Tile::getCoordinates() {
-                return this->coordinates;
-            }
+            //AuxiliaryPackage::Coordinates Tile::getCoordinates() {
+            //    return this->coordinates;
+            //}
 
             bool Tile::isPassable() {
                 return this->passedBy;

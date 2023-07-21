@@ -2,7 +2,7 @@
 // Created by EgrZver on 20.07.2023.
 //
 #include <iostream>
-#include <game/auxiliary/auxiliary.h>
+#include "game/auxiliary/auxiliaryPackage.h"
 
 #ifndef ROGUENGINE_ENTITY_H
 #define ROGUENGINE_ENTITY_H
