@@ -10,6 +10,11 @@
 namespace RoguEngine {
     namespace GameCore {
         namespace EntityPackage {
+            /**
+             * \brief Player entity class
+             * \details Represents a class of a player.
+             * Contains some specific variables and methods such as HP etc.
+             */
             class Player: public Entity {
                 private:
                     std::wstring name;
@@ -21,11 +26,21 @@ namespace RoguEngine {
                     Player(std::wstring name, int maxHP, AuxiliaryPackage::Coordinates coordinates);
                     int getMaxHP();
             };
-
+            /**
+             * \brief Player class constructor
+             * \details Standard player constructor. Unlike Entity, Player does not require entityType and symbol because for player it is preset as AuxiliaryPackage::EntityType::Player and '@'
+             * \param name The name of a player
+             * \param maxHP The max level of HP
+             * \param coordinates The start coordinates of a player
+             */
             Player::Player(std::wstring name, int maxHP, AuxiliaryPackage::Coordinates coordinates) : Entity(name, AuxiliaryPackage::Player, '@', coordinates) {
                 this->maxHP = maxHP;
             }
-
+            /**
+             * \brief Max HP getter
+             * \details Standard player's max HP getter
+             * \return The max HP of a player
+             */
             int Player::getMaxHP() {
                 return this->maxHP;
             }
