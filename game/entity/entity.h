@@ -8,7 +8,7 @@
 #define ROGUENGINE_ENTITY_H
 
 namespace RoguEngine {
-    namespace GameModule {
+    namespace GameCore {
         namespace EntityPackage {
             /**
              * \brief Base entity class

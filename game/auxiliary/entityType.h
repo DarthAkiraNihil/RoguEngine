@@ -6,10 +6,11 @@
 #define ROGUENGINE_ENTITYTYPE_H
 
 namespace RoguEngine {
-    namespace GameModule {
+    namespace GameCore {
         namespace AuxiliaryPackage {
             enum EntityType {
-                FuckingSlave
+                FuckingSlave,
+                Player
             };
         }
     }
