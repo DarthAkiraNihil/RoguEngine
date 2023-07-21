@@ -2,7 +2,7 @@
 // Created by EgrZver on 20.07.2023.
 //
 #include <iostream>
-#include "game/auxiliary/auxiliaryPackage.h"
+#include "game/types/typesPackage.h"
 
 #ifndef ROGUENGINE_ENTITY_H
 #define ROGUENGINE_ENTITY_H
@@ -18,18 +18,18 @@ namespace RoguEngine {
              */
             class Entity {
                 public:
-                    Entity(std::wstring name, AuxiliaryPackage::EntityType entityType, wchar_t symbol, AuxiliaryPackage::Coordinates coordinates);
+                    Entity(std::wstring name, TypesPackage::EntityType entityType, wchar_t symbol, TypesPackage::Coordinates coordinates);
                     std::wstring getName();
-                    AuxiliaryPackage::EntityType getType();
+                    TypesPackage::EntityType getType();
                     wchar_t getSymbol();
-                    AuxiliaryPackage::Coordinates getCoordinates();
-                    void setCoordinates(AuxiliaryPackage::Coordinates newCoordinates);
-                    void move(AuxiliaryPackage::Coordinates direction);
+                    TypesPackage::Coordinates getCoordinates();
+                    void setCoordinates(TypesPackage::Coordinates newCoordinates);
+                    void move(TypesPackage::Coordinates direction);
                 private:
                     std::wstring name;
-                    AuxiliaryPackage::EntityType entityType;
+                    TypesPackage::EntityType entityType;
                     wchar_t symbol;
-                    AuxiliaryPackage::Coordinates coordinates;
+                    TypesPackage::Coordinates coordinates;
 
             };
             /**
@@ -40,7 +40,7 @@ namespace RoguEngine {
              * \param symbol The symbol of an entity. Will be used in rendering
              * \param coordinates The start coordinates of an entity
              */
-            Entity::Entity(std::wstring name, AuxiliaryPackage::EntityType entityType, wchar_t symbol, AuxiliaryPackage::Coordinates coordinates) {
+            Entity::Entity(std::wstring name, TypesPackage::EntityType entityType, wchar_t symbol, TypesPackage::Coordinates coordinates) {
                 this->name = name;
                 this->entityType = entityType;
                 this->symbol = symbol;
@@ -67,7 +67,7 @@ namespace RoguEngine {
              * \details Standard entity's type getter
              * \return The type of an entity
              */
-            AuxiliaryPackage::EntityType Entity::getType() {
+            TypesPackage::EntityType Entity::getType() {
                 return this->entityType;
             }
             /**
@@ -75,7 +75,7 @@ namespace RoguEngine {
              * \details Standard entity's coordinates getter
              * \return The coordinates of an entity
              */
-            AuxiliaryPackage::Coordinates Entity::getCoordinates() {
+            TypesPackage::Coordinates Entity::getCoordinates() {
                 return this->coordinates;
             }
             /**
@@ -83,7 +83,7 @@ namespace RoguEngine {
              * \details Standard entity's name setter
              * \param newCoordinates New coordinates of an entity
              */
-            void Entity::setCoordinates(AuxiliaryPackage::Coordinates newCoordinates) {
+            void Entity::setCoordinates(TypesPackage::Coordinates newCoordinates) {
                 this->coordinates = newCoordinates;
             }
 
@@ -92,7 +92,7 @@ namespace RoguEngine {
              * \details Changes entity's coordinates according to the direction
              * \param direction Direction to move
              */
-            void Entity::move(AuxiliaryPackage::Coordinates direction) {
+            void Entity::move(TypesPackage::Coordinates direction) {
                 this->coordinates.x += direction.x;
                 this->coordinates.y += direction.y;
             }

@@ -7,7 +7,7 @@
 
 namespace RoguEngine {
     namespace GameCore {
-        namespace AuxiliaryPackage {
+        namespace TypesPackage {
             struct Coordinates {
                 int x, y;
 

@@ -2,7 +2,7 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <game/locations/tile.h>
-#include "game/auxiliary/auxiliaryPackage.h"
+#include "game/types/typesPackage.h"
 #include <game/entity/entity.h>
 #include <include/conio21/conio2.h>
 #include <iostream>
@@ -21,15 +21,15 @@ namespace RoguEngine {
                     std::vector<EntityPackage::Entity> locationEntities;
                 public:
                     Location(int height, int length);
-                    Tile getTile(AuxiliaryPackage::Coordinates coordinates);
-                    EntityPackage::Entity getEntityFromPlace(AuxiliaryPackage::Coordinates coordinates);
-                    void moveEntity(AuxiliaryPackage::Coordinates oldCoordinates, AuxiliaryPackage::Coordinates newCoordinates);
+                    Tile getTile(TypesPackage::Coordinates coordinates);
+                    EntityPackage::Entity getEntityFromPlace(TypesPackage::Coordinates coordinates);
+                    void moveEntity(TypesPackage::Coordinates oldCoordinates, TypesPackage::Coordinates newCoordinates);
                     int getHeight();
                     int getLength();
-                    void setTile(Tile tile, AuxiliaryPackage::Coordinates coordinates);
+                    void setTile(Tile tile, TypesPackage::Coordinates coordinates);
                     void addEntity(EntityPackage::Entity entity);
-                    void removeEntityFromPlace(AuxiliaryPackage::Coordinates entityCoordinates);
-                    void render(AuxiliaryPackage::Coordinates placeToRender);
+                    void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
+                    void render(TypesPackage::Coordinates placeToRender);
             };
 
             Location::Location(int height, int length) {
@@ -41,11 +41,11 @@ namespace RoguEngine {
                 }
             }
 
-            Tile Location::getTile(AuxiliaryPackage::Coordinates coordinates) {
+            Tile Location::getTile(TypesPackage::Coordinates coordinates) {
                 return this->locationMap[coordinates.y][coordinates.x];
             }
 
-            EntityPackage::Entity Location::getEntityFromPlace(AuxiliaryPackage::Coordinates coordinates) {
+            EntityPackage::Entity Location::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
                 for (int i = 0; i < this->locationEntities.size(); i++) {
                     if (this->locationEntities.at(i).getCoordinates() == coordinates) {
                         return this->locationEntities.at(i);
@@ -62,7 +62,7 @@ namespace RoguEngine {
                 return this->length;
             }
 
-            void Location::moveEntity(AuxiliaryPackage::Coordinates oldCoordinates, AuxiliaryPackage::Coordinates newCoordinates) {
+            void Location::moveEntity(TypesPackage::Coordinates oldCoordinates, TypesPackage::Coordinates newCoordinates) {
                 for (int i = 0; i < this->locationEntities.size(); i++) {
                     if (this->locationEntities.at(i).getCoordinates() == oldCoordinates) {
                         this->locationEntities.at(i).setCoordinates(newCoordinates);
@@ -70,13 +70,13 @@ namespace RoguEngine {
                     }
                 }
             }
-            void Location::setTile(Tile tile, AuxiliaryPackage::Coordinates coordinates) {
+            void Location::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
                 this->locationMap[coordinates.y][coordinates.x] = tile;
             }
             void Location::addEntity(EntityPackage::Entity entity) {
                 this->locationEntities.push_back(entity);
             }
-            void Location::removeEntityFromPlace(AuxiliaryPackage::Coordinates entityCoordinates) {
+            void Location::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
                 for (auto it = this->locationEntities.begin(); it != this->locationEntities.end(); it++) {
                     if (it->getCoordinates() == entityCoordinates) {
                         this->locationEntities.erase(it);
@@ -84,7 +84,7 @@ namespace RoguEngine {
                     }
                 }
             }
-            void Location::render(AuxiliaryPackage::Coordinates placeToRender) {
+            void Location::render(TypesPackage::Coordinates placeToRender) {
                 for (int i = 0; i < this->height; i++) {
                     for (int j = 0; j < this->length; j++) {
                         gotoxy(placeToRender.x + j + 1, placeToRender.y + i + 1);

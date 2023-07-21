@@ -2,7 +2,7 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <iostream>
-#include "game/auxiliary/auxiliaryPackage.h"
+#include "game/types/typesPackage.h"
 
 #ifndef ROGUENGINE_TILE_H
 #define ROGUENGINE_TILE_H

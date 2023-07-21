@@ -1,6 +1,7 @@
 //
 // Created by EgrZver on 21.07.2023.
 //
+#include <game/types/typesPackage.h>
 #include <game/entity/entity.h>
 #include <iostream>
 
@@ -18,22 +19,22 @@ namespace RoguEngine {
             class Player: public Entity {
                 private:
                     std::wstring name;
-                    AuxiliaryPackage::EntityType entityType;
+                    TypesPackage::EntityType entityType;
                     wchar_t symbol;
-                    AuxiliaryPackage::Coordinates coordinates;
+                    TypesPackage::Coordinates coordinates;
                     int maxHP;
                 public:
-                    Player(std::wstring name, int maxHP, AuxiliaryPackage::Coordinates coordinates);
+                    Player(std::wstring name, int maxHP, TypesPackage::Coordinates coordinates);
                     int getMaxHP();
             };
             /**
              * \brief Player class constructor
-             * \details Standard player constructor. Unlike Entity, Player does not require entityType and symbol because for player it is preset as AuxiliaryPackage::EntityType::Player and '@'
+             * \details Standard player constructor. Unlike Entity, Player does not require entityType and symbol because for player it is preset as TypesPackage::EntityType::Player and '@'
              * \param name The name of a player
              * \param maxHP The max level of HP
              * \param coordinates The start coordinates of a player
              */
-            Player::Player(std::wstring name, int maxHP, AuxiliaryPackage::Coordinates coordinates) : Entity(name, AuxiliaryPackage::Player, '@', coordinates) {
+            Player::Player(std::wstring name, int maxHP, TypesPackage::Coordinates coordinates) : Entity(name, TypesPackage::Player, '@', coordinates) {
                 this->maxHP = maxHP;
             }
             /**
