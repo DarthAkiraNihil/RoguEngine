@@ -24,6 +24,7 @@ namespace RoguEngine {
                     wchar_t getSymbol();
                     AuxiliaryPackage::Coordinates getCoordinates();
                     void setCoordinates(AuxiliaryPackage::Coordinates newCoordinates);
+                    void move(AuxiliaryPackage::Coordinates direction);
                 private:
                     std::wstring name;
                     AuxiliaryPackage::EntityType entityType;
@@ -84,6 +85,16 @@ namespace RoguEngine {
              */
             void Entity::setCoordinates(AuxiliaryPackage::Coordinates newCoordinates) {
                 this->coordinates = newCoordinates;
+            }
+
+            /**
+             * \brief Entity mover
+             * \details Changes entity's coordinates according to the direction
+             * \param direction Direction to move
+             */
+            void Entity::move(AuxiliaryPackage::Coordinates direction) {
+                this->coordinates.x += direction.x;
+                this->coordinates.y += direction.y;
             }
         }
     }
