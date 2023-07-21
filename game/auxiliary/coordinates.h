@@ -10,6 +10,10 @@ namespace RoguEngine {
         namespace AuxiliaryPackage {
             struct Coordinates {
                 int x, y;
+
+                bool operator==(Coordinates const& other) const {
+                    return this->x == other.x && this->y == other.y;
+                }
             };
 
             const Coordinates DIRECTION_NORTH = {0, 1};

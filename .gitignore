@@ -3,3 +3,5 @@
 /cmake-build-debug/
 /.idea/
 /doc/
+/include/conio21/constream
+/include/conio21/conio.ppr
