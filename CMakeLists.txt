@@ -8,9 +8,25 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 file(GLOB SOURCES include/conio21/*.*)
         include_directories(${CMAKE_SOURCE_DIR})
 
+set(SFML_STATIC_LIBRARIES TRUE)
+
+include_directories(${CMAKE_SOURCE_DIR}/SFML/include)
+
+## In most cases better set in the CMake cache
+set(SFML_DIR "${CMAKE_SOURCE_DIR}/include/SFML/lib/cmake/SFML")
+
+find_package(SFML 2.6 COMPONENTS graphics audio REQUIRED)
+
 add_library(RoguEngine library.cpp)
 
 add_executable(RELocTest testing/loctest.cpp ${SOURCES})
+
+add_executable(RESFMLTest WIN32 testing/sfmltest.cpp ${SOURCES})
+
+target_link_libraries(RESFMLTest sfml-graphics sfml-audio)
+
+
+
 
 
 

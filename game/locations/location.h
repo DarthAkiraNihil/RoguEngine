@@ -84,6 +84,7 @@ namespace RoguEngine {
                     }
                 }
             }
+            /*
             void Location::render(TypesPackage::Coordinates placeToRender) {
                 for (int i = 0; i < this->height; i++) {
                     for (int j = 0; j < this->length; j++) {
@@ -97,6 +98,7 @@ namespace RoguEngine {
                     std::wcout << temp.getSymbol();
                 }
             }
+             */
 
         }
     }

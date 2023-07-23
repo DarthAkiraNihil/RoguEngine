@@ -14,23 +14,20 @@ namespace RoguEngine {
                 private:
                     wchar_t symbol;
                     std::wstring name;
-                    //AuxiliaryPackage::Coordinates coordinates;
                     bool passedBy;
                 public:
                     Tile() = default;
-                    Tile(wchar_t symbol, std::wstring name, /*AuxiliaryPackage::Coordinates coordinates,*/ bool isPassable);
+                    Tile(wchar_t symbol, std::wstring name, bool isPassable);
                     wchar_t getChar();
                     std::wstring getName();
-                    //AuxiliaryPackage::Coordinates getCoordinates();
                     bool isPassable();
             };
 
 
 
-            Tile::Tile(wchar_t symbol, std::wstring name,/* AuxiliaryPackage::Coordinates coordinates,*/ bool isPassable) {
+            Tile::Tile(wchar_t symbol, std::wstring name, bool isPassable) {
                 this->symbol = symbol;
                 this->name = name;
-                //this->coordinates = coordinates;
                 this->passedBy = isPassable;
             }
 
@@ -42,13 +39,11 @@ namespace RoguEngine {
                 return this->name;
             }
 
-            //AuxiliaryPackage::Coordinates Tile::getCoordinates() {
-            //    return this->coordinates;
-            //}
-
             bool Tile::isPassable() {
                 return this->passedBy;
             }
+
+            //const Tile voidTile = Tile(32, L"void", false);
         }
     }
 }
