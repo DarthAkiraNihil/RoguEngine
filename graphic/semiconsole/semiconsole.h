@@ -5,8 +5,15 @@
 #ifndef ROGUENGINE_SEMICONSOLE_H
 #define ROGUENGINE_SEMICONSOLE_H
 
-class SemiConsole {
+namespace RoguEngine {
+    namespace GraphicCore {
+        namespace SemiConsolePackage {
+            class SemiConsole {
 
-};
+            };
+        }
+    }
+}
+
 
 #endif //ROGUENGINE_SEMICONSOLE_H
