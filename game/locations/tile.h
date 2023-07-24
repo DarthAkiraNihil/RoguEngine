@@ -19,13 +19,15 @@ namespace RoguEngine {
              */
             class Tile {
                 private:
+                    int id;
                     sf::Sprite tileSprite;
                     std::wstring name;
                     TypesPackage::RGBAData color;
                     bool passable;
                 public:
                     Tile() = default;
-                    Tile(sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor = TypesPackage::NoColor);
+                    Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor);
+                    int getID();
                     std::wstring getName();
                     sf::Sprite getRawSprite();
                     sf::Sprite getRenderedSprite();
@@ -42,13 +44,17 @@ namespace RoguEngine {
              * \param isPassable Indicator if an entity can pass through a tile
              * \param baseColor The color of a tile
              */
-            Tile::Tile(sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor) {
+            Tile::Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor) {
+                this->id = id;
                 this->tileSprite = tileSprite;
                 this->name = name;//std::move(name);
                 this->passable = isPassable;
                 this->color = baseColor;
             }
 
+            int Tile::getID() {
+                return this->id;
+            }
             /**
              * \brief Name getter
              * \details Standard Tile's name getter
