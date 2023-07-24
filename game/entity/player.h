@@ -20,21 +20,22 @@ namespace RoguEngine {
                 private:
                     std::wstring name;
                     TypesPackage::EntityType entityType;
-                    wchar_t symbol;
+                    sf::Sprite sprite;
                     TypesPackage::Coordinates coordinates;
                     int maxHP;
                 public:
-                    Player(std::wstring name, int maxHP, TypesPackage::Coordinates coordinates);
+                    Player(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates);
                     int getMaxHP();
             };
             /**
              * \brief Player class constructor
              * \details Standard player constructor. Unlike Entity, Player does not require entityType and symbol because for player it is preset as TypesPackage::EntityType::Player and '@'
              * \param name The name of a player
+             * \param sprite The Sprite of a player
              * \param maxHP The max level of HP
              * \param coordinates The start coordinates of a player
              */
-            Player::Player(std::wstring name, int maxHP, TypesPackage::Coordinates coordinates) : Entity(name, TypesPackage::Player, '@', coordinates) {
+            Player::Player(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates) : Entity(name, TypesPackage::Player, sprite, coordinates) {
                 this->maxHP = maxHP;
             }
             /**

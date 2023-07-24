@@ -2,6 +2,7 @@
 // Created by EgrZver on 20.07.2023.
 //
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include "game/types/typesPackage.h"
 
 #ifndef ROGUENGINE_ENTITY_H
@@ -14,21 +15,22 @@ namespace RoguEngine {
              * \brief Base entity class
              * \details Represents a basic class for all entities.
              * Contains all variables that are common for all characters such as name, symbol etc.
-             * Name, type and symbol of an entity are immutable
+             * Name, type and sprite of an entity are immutable
              */
             class Entity {
                 public:
-                    Entity(std::wstring name, TypesPackage::EntityType entityType, wchar_t symbol, TypesPackage::Coordinates coordinates);
+                    Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates);
                     std::wstring getName();
                     TypesPackage::EntityType getType();
-                    wchar_t getSymbol();
+                    sf::Sprite getSprite();
                     TypesPackage::Coordinates getCoordinates();
                     void setCoordinates(TypesPackage::Coordinates newCoordinates);
                     void move(TypesPackage::Coordinates direction);
                 private:
                     std::wstring name;
                     TypesPackage::EntityType entityType;
-                    wchar_t symbol;
+                    sf::Sprite sprite;
+                    //wchar_t symbol;
                     TypesPackage::Coordinates coordinates;
 
             };
@@ -40,10 +42,10 @@ namespace RoguEngine {
              * \param symbol The symbol of an entity. Will be used in rendering
              * \param coordinates The start coordinates of an entity
              */
-            Entity::Entity(std::wstring name, TypesPackage::EntityType entityType, wchar_t symbol, TypesPackage::Coordinates coordinates) {
+            Entity::Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates) {
                 this->name = name;
                 this->entityType = entityType;
-                this->symbol = symbol;
+                this->sprite = sprite;
                 this->coordinates = coordinates;
             }
             /**
@@ -55,12 +57,12 @@ namespace RoguEngine {
                 return this->name;
             }
             /**
-             * \brief Symbol getter
-             * \details Standard entity's symbol getter
-             * \return The symbol of an entity
+             * \brief Sprite getter
+             * \details Standard entity's sprite getter
+             * \return The sprite of an entity
              */
-            wchar_t Entity::getSymbol() {
-                return this->symbol;
+            sf::Sprite Entity::getSprite() {
+                return this->sprite;
             }
             /**
              * \brief Type getter
