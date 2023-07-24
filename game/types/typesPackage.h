@@ -7,5 +7,6 @@
 
 #include "coordinates.h"
 #include "entityType.h"
+#include "rgbadata.h"
 
 #endif //ROGUENGINE_AUXILIARY_H

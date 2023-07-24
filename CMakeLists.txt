@@ -10,7 +10,7 @@ file(GLOB SOURCES include/conio21/*.*)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 
-include_directories(${CMAKE_SOURCE_DIR}/SFML/include)
+include_directories(${CMAKE_SOURCE_DIR}/include/SFML/include)
 
 ## In most cases better set in the CMake cache
 set(SFML_DIR "${CMAKE_SOURCE_DIR}/include/SFML/lib/cmake/SFML")
