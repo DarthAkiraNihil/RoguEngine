@@ -20,6 +20,11 @@ namespace RoguEngine {
             const Coordinates DIRECTION_SOUTH = {0, -1};
             const Coordinates DIRECTION_WEST = {1, 0};
             const Coordinates DIRECTION_EAST = {-1, 0};
+
+            const Coordinates DIRECTION_NORTH_WEST = {-1 , 1};
+            const Coordinates DIRECTION_NORTH_EAST = {1 , 1};
+            const Coordinates DIRECTION_SOUTH_WEST = {-1 , -1};
+            const Coordinates DIRECTION_SOUTH_EAST = {1 , -1};
         }
     }
 }
