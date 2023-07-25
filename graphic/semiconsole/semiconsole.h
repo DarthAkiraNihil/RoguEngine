@@ -20,6 +20,7 @@ namespace RoguEngine {
                     sf::RenderWindow window; // todo make private and add interface
                     SemiConsole(std::string fontFileName, GameCore::TypesPackage::Pair fontSize, GameCore::TypesPackage::Pair windowTileSize);
                     void putChar(int id, GameCore::TypesPackage::Coordinates at);
+                    void putColoredChar(int id, GameCore::TypesPackage::Coordinates at, GameCore::TypesPackage::RGBAData color);
             };
 
             SemiConsole::SemiConsole(std::string fontFileName, GameCore::TypesPackage::Pair fontSize,
@@ -32,6 +33,14 @@ namespace RoguEngine {
             void SemiConsole::putChar(int id, GameCore::TypesPackage::Coordinates at) {
                 sf::Sprite puttingChar = this->font.getBaseLetter(id);
                 puttingChar.setPosition(at.x * this->tileSize.x, at.y * this->tileSize.y);
+                this->window.draw(puttingChar);
+            }
+
+            void SemiConsole::putColoredChar(int id, GameCore::TypesPackage::Coordinates at,
+                                             GameCore::TypesPackage::RGBAData color) {
+                sf::Sprite puttingChar = this->font.getBaseLetter(id);
+                puttingChar.setPosition(at.x * this->tileSize.x, at.y * this->tileSize.y);
+                puttingChar.setColor(sf::Color(color.r, color.g, color.b, color.alpha));
                 this->window.draw(puttingChar);
             }
         }
