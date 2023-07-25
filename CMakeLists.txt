@@ -23,7 +23,10 @@ add_executable(RELocTest testing/loctest.cpp ${SOURCES})
 
 add_executable(RESFMLTest WIN32 testing/sfmltest.cpp ${SOURCES})
 
+add_executable(RESCTest WIN32 testing/sctest.cpp ${SOURCES})
+
 target_link_libraries(RESFMLTest sfml-graphics sfml-audio)
+target_link_libraries(RESCTest sfml-graphics sfml-audio)
 
 
 
