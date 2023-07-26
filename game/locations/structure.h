@@ -1,0 +1,8 @@
+//
+// Created by EgrZver on 25.07.2023.
+//
+
+#ifndef ROGUENGINE_STRUCTURE_H
+#define ROGUENGINE_STRUCTURE_H
+
+#endif //ROGUENGINE_STRUCTURE_H
