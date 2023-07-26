@@ -7,10 +7,15 @@
 
 namespace RoguEngine {
     namespace GameCore {
+        /**
+         * /brief Package of Engine types
+         * /details Contains all definitions of specific structures, special typedefs of them and required enumerations and constants
+         */
         namespace TypesPackage {
+            ///Used to represent a type of an entity
             enum EntityType {
-                FuckingSlave,
-                Player
+                FuckingSlave, ///TEST
+                Player/// Entity type of Player
             };
         }
     }

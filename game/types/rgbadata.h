@@ -8,6 +8,11 @@
 namespace RoguEngine {
     namespace GameCore {
         namespace TypesPackage {
+            /**
+             * \brief RGBA color representation
+             * \details A structure that stores values of an RGBA color including r, g, b and alpha components.
+             * Can be compared to equality or inequality (overloaded operator== and operator!=)
+             */
             struct RGBAData {
                 int r, g, b, alpha;
 
@@ -20,7 +25,7 @@ namespace RoguEngine {
                 }
             };
 
-            const RGBAData NoColor = {-1, -1, -1, -1};
+            const RGBAData NoColor = {255, 255, 255, 255};
         }
     }
 }

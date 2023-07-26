@@ -1,5 +1,5 @@
 //
-// Created by EgrZver on 20.07.2023.
+//
 //
 
 #ifndef ROGUENGINE_AUXILIARY_H
