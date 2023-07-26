@@ -2,9 +2,9 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <game/locations/tile.h>
-#include "game/types/typesPackage.h"
+#include <game/types/typesPackage.h>
+#include <game/locations/structure.h>
 #include <game/entity/entity.h>
-#include <include/conio21/conio2.h>
 #include <iostream>
 #include <vector>
 
@@ -20,21 +20,20 @@ namespace RoguEngine {
                     Tile** locationMap;
                     std::vector<EntityPackage::Entity> locationEntities;
                 public:
-                    Location(int height, int length);
+                    Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
                     EntityPackage::Entity getEntityFromPlace(TypesPackage::Coordinates coordinates);
-                    void moveEntity(TypesPackage::Coordinates oldCoordinates, TypesPackage::Coordinates newCoordinates);
                     int getHeight();
                     int getLength();
                     void setTile(Tile tile, TypesPackage::Coordinates coordinates);
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
-                    void render(TypesPackage::Coordinates placeToRender);
+                    void pasteStructure(Structure structure, TypesPackage::Coordinates at);
             };
 
-            Location::Location(int height, int length) {
-                this->height = height;
-                this->length = length;
+            Location::Location(TypesPackage::Pair size) {
+                this->height = size.y;
+                this->length = size.x;
                 this->locationMap = new Tile* [height];
                 for (int i = 0; i < length; i++) {
                     this->locationMap[i] = new Tile[length];
@@ -62,14 +61,6 @@ namespace RoguEngine {
                 return this->length;
             }
 
-            void Location::moveEntity(TypesPackage::Coordinates oldCoordinates, TypesPackage::Coordinates newCoordinates) {
-                for (int i = 0; i < this->locationEntities.size(); i++) {
-                    if (this->locationEntities.at(i).getCoordinates() == oldCoordinates) {
-                        this->locationEntities.at(i).setCoordinates(newCoordinates);
-                        break;
-                    }
-                }
-            }
             void Location::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
                 this->locationMap[coordinates.y][coordinates.x] = tile;
             }
@@ -84,21 +75,15 @@ namespace RoguEngine {
                     }
                 }
             }
-            /*
-            void Location::render(TypesPackage::Coordinates placeToRender) {
-                for (int i = 0; i < this->height; i++) {
-                    for (int j = 0; j < this->length; j++) {
-                        gotoxy(placeToRender.x + j + 1, placeToRender.y + i + 1);
-                        std::wcout << this->locationMap[i][j].getChar();
+
+            void Location::pasteStructure(Structure structure, TypesPackage::Coordinates at) {
+                for (int i = 0; i < structure.getHeight(); i++) {
+                    for (int j = 0; j < structure.getLength(); j++) {
+
+                        this->locationMap[at.y + i][at.x + j] = structure.getTile({j, i});
                     }
                 }
-                for (int i = 0; i < this->locationEntities.size(); i++) {
-                    EntityPackage::Entity temp = this->locationEntities.at(i);
-                    gotoxy(temp.getCoordinates().x + 1, temp.getCoordinates().y + 1);
-                    std::wcout << temp.getSymbol();
-                }
             }
-             */
 
         }
     }
