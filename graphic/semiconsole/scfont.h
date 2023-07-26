@@ -1,18 +1,16 @@
 //
 // Created by EgrZver on 24.07.2023.
 //
-#include <graphic/tileset.h>
+//#include <graphic/tileset.h>
 #include <game/types/typesPackage.h>
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <map>
+//#include <map>
 
 #ifndef ROGUENGINE_SCFONT_H
 #define ROGUENGINE_SCFONT_H
 
-namespace RoguEngine {
-    namespace GraphicCore {
-        namespace SemiConsolePackage {
+namespace RoguEngine::GraphicCore::SemiConsolePackage {
             class SemiConsoleFont {
                 private:
                     sf::Texture fontFace[256];
@@ -40,7 +38,5 @@ namespace RoguEngine {
                 return sf::Sprite(this->fontFace[id]);
             }
         }
-    }
-}
 
 #endif //ROGUENGINE_SCFONT_H
