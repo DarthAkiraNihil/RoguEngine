@@ -1,6 +1,6 @@
-//
-// Created by EgrZver on 20.07.2023.
-//
+/**
+ *
+ */
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "game/types/typesPackage.h"

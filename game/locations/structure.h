@@ -11,6 +11,11 @@
 namespace RoguEngine {
     namespace GameCore {
         namespace LocationsPackage {
+            /**
+             * \brief Structure class
+             * \details A class that represents a game Structure. Contains only one layer of tiles.
+             * Also stores information about all entities in the Structure. A structure can be pasted in here.
+             */
             class Structure {
                 private:
                     int height, length;
@@ -27,6 +32,11 @@ namespace RoguEngine {
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
             };
 
+            /**
+             * \brief Structure class constructor
+             * \details Standard Structure class constructor
+             * \param size The size of the Structure (length x height)
+             */
             Structure::Structure(TypesPackage::Pair size) {
                 this->height = size.y;
                 this->length = size.x;
@@ -36,10 +46,22 @@ namespace RoguEngine {
                 }
             }
 
+            /**
+             * \brief Structure tile getter
+             * \details Standard Structure tile getter
+             * \param coordinates The coordinates of a tile
+             * \return The tile of a Structure on desired coordinates
+             */
             Tile Structure::getTile(TypesPackage::Coordinates coordinates) {
                 return this->structureTiles[coordinates.y][coordinates.x];
             }
 
+            /**
+             * \brief Structure entity getter
+             * \details Standard Structure entity getter
+             * \param coordinates The coordinates of an entity
+             * \return The entity of a Structure on desired coordinates
+             */
             EntityPackage::Entity Structure::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
                 for (int i = 0; i < this->structureEntities.size(); i++) {
                     if (this->structureEntities.at(i).getCoordinates() == coordinates) {
@@ -49,20 +71,48 @@ namespace RoguEngine {
                 throw std::string("FUCK1234");
             }
 
+            /**
+             * \brief Structure height getter
+             * \details Standard Structure height getter
+             * \return The height of a Structure
+             */
             int Structure::getHeight() {
                 return this->height;
             }
 
+            /**
+             * \brief Structure length getter
+             * \details Standard Structure length getter
+             * \return The length of a Structure
+             */
             int Structure::getLength() {
                 return this->length;
             }
 
+            /**
+             * \brief Structure tile setter
+             * \details Standard Structure tile setter
+             * \param tile A tile to paste
+             * \param coordinates The coordinates of a tile to paste
+             */
             void Structure::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
                 this->structureTiles[coordinates.y][coordinates.x] = tile;
             }
+
+            /**
+             * \brief Structure entity adder
+             * \details Standard Structure entity adder
+             * \param entity An entity to add to a Structure
+             */
             void Structure::addEntity(EntityPackage::Entity entity) {
                 this->structureEntities.push_back(entity);
             }
+
+            /**
+            * \brief Structure entity remover
+            * \details Standard Structure entity remover
+            * \param entityCoordinates The coordinates of an entity to remove
+            */
             void Structure::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
                 for (auto it = this->structureEntities.begin(); it != this->structureEntities.end(); it++) {
                     if (it->getCoordinates() == entityCoordinates) {
