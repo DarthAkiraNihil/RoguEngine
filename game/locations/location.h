@@ -14,13 +14,18 @@
 namespace RoguEngine {
     namespace GameCore {
         namespace LocationsPackage {
+            /**
+             * \brief Location class
+             * \details A class that represents a game location. Contains only one layer of tiles.
+             * Also stores information about all entities in the location. A structure can be pasted in here.
+             */
             class Location {
                 private:
                     int height, length;
                     Tile** locationMap;
                     std::vector<EntityPackage::Entity> locationEntities;
                 public:
-                    Location(TypesPackage::Pair size);
+                    explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
                     EntityPackage::Entity getEntityFromPlace(TypesPackage::Coordinates coordinates);
                     int getHeight();
@@ -31,6 +36,11 @@ namespace RoguEngine {
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
             };
 
+            /**
+             * \brief Location class constructor
+             * \details Standard Location class constructor
+             * \param size The size of the location (length x height)
+             */
             Location::Location(TypesPackage::Pair size) {
                 this->height = size.y;
                 this->length = size.x;
@@ -40,10 +50,22 @@ namespace RoguEngine {
                 }
             }
 
+            /**
+             * \brief Location tile getter
+             * \details Standard Location tile getter
+             * \param coordinates The coordinates of a tile
+             * \return The tile of a location on desired coordinates
+             */
             Tile Location::getTile(TypesPackage::Coordinates coordinates) {
                 return this->locationMap[coordinates.y][coordinates.x];
             }
 
+            /**
+             * \brief Location entity getter
+             * \details Standard Location entity getter
+             * \param coordinates The coordinates of an entity
+             * \return The entity of a location on desired coordinates
+             */
             EntityPackage::Entity Location::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
                 for (int i = 0; i < this->locationEntities.size(); i++) {
                     if (this->locationEntities.at(i).getCoordinates() == coordinates) {
@@ -53,20 +75,48 @@ namespace RoguEngine {
                 throw std::string("FUCK1234");
             }
 
+            /**
+             * \brief Location height getter
+             * \details Standard Location height getter
+             * \return The height of a location
+             */
             int Location::getHeight() {
                 return this->height;
             }
 
+            /**
+             * \brief Location length getter
+             * \details Standard Location length getter
+             * \return The length of a location
+             */
             int Location::getLength() {
                 return this->length;
             }
 
+            /**
+             * \brief Location tile setter
+             * \details Standard Location tile setter
+             * \param tile A tile to paste
+             * \param coordinates The coordinates of a tile to paste
+             */
             void Location::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
                 this->locationMap[coordinates.y][coordinates.x] = tile;
             }
+
+            /**
+             * \brief Location entity adder
+             * \details Standard Location entity adder
+             * \param entity An entity to add to a location
+             */
             void Location::addEntity(EntityPackage::Entity entity) {
                 this->locationEntities.push_back(entity);
             }
+
+            /**
+             * \brief Location entity remover
+             * \details Standard Location entity remover
+             * \param entityCoordinates The coordinates of an entity to remove
+             */
             void Location::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
                 for (auto it = this->locationEntities.begin(); it != this->locationEntities.end(); it++) {
                     if (it->getCoordinates() == entityCoordinates) {
@@ -76,6 +126,12 @@ namespace RoguEngine {
                 }
             }
 
+            /**
+             * \brief Paster of structures
+             * \details Pastes a structure into a location
+             * \param structure A structure to paste in
+             * \param at The coordinates of left top corner of pasting place
+             */
             void Location::pasteStructure(Structure structure, TypesPackage::Coordinates at) {
                 for (int i = 0; i < structure.getHeight(); i++) {
                     for (int j = 0; j < structure.getLength(); j++) {
