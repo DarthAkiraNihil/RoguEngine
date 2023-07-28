@@ -30,7 +30,6 @@ namespace RoguEngine {
                     std::wstring name;
                     TypesPackage::EntityType entityType;
                     sf::Sprite sprite;
-                    //wchar_t symbol;
                     TypesPackage::Coordinates coordinates;
 
             };

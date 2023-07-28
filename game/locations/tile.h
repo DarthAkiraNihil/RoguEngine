@@ -20,14 +20,13 @@ namespace RoguEngine {
             class Tile {
                 private:
                     int id;
-                    sf::Texture tileTexture;
-                    //sf::Sprite tileSprite;
+                    sf::Sprite tileSprite;
                     std::wstring name;
                     TypesPackage::RGBAData color;
                     bool passable;
                 public:
                     Tile() = default;
-                    Tile(int id, sf::Texture tileTexture, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor);
+                    Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor);
                     int getID();
                     std::wstring getName();
                     sf::Sprite getRawSprite();
@@ -45,9 +44,9 @@ namespace RoguEngine {
              * \param isPassable Indicator if an entity can pass through a tile
              * \param baseColor The color of a tile
              */
-            Tile::Tile(int id, sf::Texture tileTexture, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor) {
+            Tile::Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor) {
                 this->id = id;
-                this->tileTexture = tileTexture;
+                this->tileSprite = tileSprite;
                 this->name = name;//std::move(name);
                 this->passable = isPassable;
                 this->color = baseColor;
@@ -80,7 +79,7 @@ namespace RoguEngine {
              * \return The raw sprite of a tile
              */
             sf::Sprite Tile::getRawSprite() {
-                return sf::Sprite(this->tileTexture);
+                return this->tileSprite;
             }
 
             /**
@@ -92,11 +91,11 @@ namespace RoguEngine {
             sf::Sprite Tile::getRenderedSprite() {
 
                 if (this->color != TypesPackage::NoColor) {
-                    sf::Sprite tmp = sf::Sprite(this->tileTexture);
+                    sf::Sprite tmp = this->tileSprite;
                     tmp.setColor(sf::Color(this->color.r, this->color.g, this->color.b, this->color.alpha));
                     return tmp;
                 } else {
-                    return sf::Sprite(this->tileTexture);
+                    return this->tileSprite;
                 }
             }
 

@@ -5,8 +5,10 @@
 #include <game/types/typesPackage.h>
 #include <game/locations/structure.h>
 #include <game/entity/entity.h>
+#include <game/gamecoreexceptions.h>
 #include <iostream>
 #include <vector>
+#include <fmt/format.h>
 
 #ifndef ROGUENGINE_LOCATION_H
 #define ROGUENGINE_LOCATION_H
@@ -55,9 +57,14 @@ namespace RoguEngine {
              * \details Standard Location tile getter
              * \param coordinates The coordinates of a tile
              * \return The tile of a location on desired coordinates
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             Tile Location::getTile(TypesPackage::Coordinates coordinates) {
-                return this->locationMap[coordinates.y][coordinates.x];
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range when addressing location tiles array");
+                } else {
+                    return this->locationMap[coordinates.y][coordinates.x];
+                }
             }
 
             /**
@@ -65,14 +72,21 @@ namespace RoguEngine {
              * \details Standard Location entity getter
              * \param coordinates The coordinates of an entity
              * \return The entity of a location on desired coordinates
+             * \throw NoEntityFoundException if no entity has been found at desired coordinates
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             EntityPackage::Entity Location::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
-                for (int i = 0; i < this->locationEntities.size(); i++) {
-                    if (this->locationEntities.at(i).getCoordinates() == coordinates) {
-                        return this->locationEntities.at(i);
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+                } else {
+                    for (EntityPackage::Entity& locationEntity : this->locationEntities) {
+                        if (locationEntity.getCoordinates() == coordinates) {
+                            return locationEntity;
+                        }
                     }
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", coordinates.x, coordinates.y));
                 }
-                throw std::string("FUCK1234");
+
             }
 
             /**
@@ -98,9 +112,14 @@ namespace RoguEngine {
              * \details Standard Location tile setter
              * \param tile A tile to paste
              * \param coordinates The coordinates of a tile to paste
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             void Location::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
-                this->locationMap[coordinates.y][coordinates.x] = tile;
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired place coordinates");
+                } else {
+                    this->locationMap[coordinates.y][coordinates.x] = tile;
+                }
             }
 
             /**
@@ -116,14 +135,21 @@ namespace RoguEngine {
              * \brief Location entity remover
              * \details Standard Location entity remover
              * \param entityCoordinates The coordinates of an entity to remove
+             * \throw NoEntityFoundException if no entity has been found at desired coordinates
              */
             void Location::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
-                for (auto it = this->locationEntities.begin(); it != this->locationEntities.end(); it++) {
-                    if (it->getCoordinates() == entityCoordinates) {
-                        this->locationEntities.erase(it);
-                        break;
+                if ((entityCoordinates.x >= this->length) || (entityCoordinates.y >= this->height) || (entityCoordinates.x < 0) || (entityCoordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+                } else {
+                    for (auto it = this->locationEntities.begin(); it != this->locationEntities.end(); it++) {
+                        if (it->getCoordinates() == entityCoordinates) {
+                            this->locationEntities.erase(it);
+                            break;
+                        }
                     }
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", entityCoordinates.x, entityCoordinates.y));
                 }
+
             }
 
             /**
@@ -131,12 +157,26 @@ namespace RoguEngine {
              * \details Pastes a structure into a location
              * \param structure A structure to paste in
              * \param at The coordinates of left top corner of pasting place
+             * \throw DimensionIncompatibilityException if the structure does not fit the location
+             * \throw InvalidStructurePastingPlaceException if the structure will cause Segmentation fault if it is pasted at desired place
              */
             void Location::pasteStructure(Structure structure, TypesPackage::Coordinates at) {
-                for (int i = 0; i < structure.getHeight(); i++) {
-                    for (int j = 0; j < structure.getLength(); j++) {
-
-                        this->locationMap[at.y + i][at.x + j] = structure.getTile({j, i});
+                int structureHeight = structure.getHeight(), structureLength = structure.getLength();
+                if ((at.x >= this->length) || (at.y >= this->height) || (at.x < 0) || (at.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired structure pasting coordinates");
+                } else if ((structureHeight > this->height) || (structureLength > this->length)) {
+                    throw CoreExceptions::DimensionIncompatibilityException(
+                        fmt::format("The structure can't be pasted: it doesn't fit the location size [Structure: h: {}, l: {}; Location: h: {}, l: {}]",structureHeight, structureHeight, this->height, this->length)
+                        );
+                } else if ((structureHeight  + at.y > this->height) || (structureLength + at.x > this->length)) {
+                    throw CoreExceptions::InvalidStructurePastingPlaceException(
+                        fmt::format("The structure can't be pasted: it will be out of location range and this may cause segmentation fault (check structure sizes and pasting coordinates)")
+                        );
+                } else {
+                    for (int i = 0; i < structure.getHeight(); i++) {
+                        for (int j = 0; j < structure.getLength(); j++) {
+                            this->locationMap[at.y + i][at.x + j] = structure.getTile({j, i});
+                        }
                     }
                 }
             }
