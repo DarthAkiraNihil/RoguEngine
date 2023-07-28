@@ -36,6 +36,7 @@ namespace RoguEngine {
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
+                    void moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates destination);
             };
 
             /**
@@ -180,6 +181,23 @@ namespace RoguEngine {
                             this->locationMap[at.y + i][at.x + j] = structure.getTile({j, i});
                         }
                     }
+                }
+            }
+
+            void Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
+                if ((source.x >= this->length) || (source.y >= this->height) || (source.x < 0) || (source.y < 0)) {
+                    throw CoreExceptions::InvalidMovingCoordinatesException("Invalid source coordinates for this location");
+                } else {
+                    for (EntityPackage::Entity& locationEntity : this->locationEntities) {
+                        TypesPackage::Coordinates entityCoordinates = locationEntity.getCoordinates();
+                        if (entityCoordinates == source) {
+                            if (this->getTile({entityCoordinates.x + direction.x, entityCoordinates.y + direction.y}).isPassable()) {
+                                locationEntity.move(direction);
+                            }
+                            break;
+                        }
+                    }
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", source.x, source.y));
                 }
             }
 
