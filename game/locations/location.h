@@ -136,6 +136,7 @@ namespace RoguEngine {
              * \details Standard Location entity remover
              * \param entityCoordinates The coordinates of an entity to remove
              * \throw NoEntityFoundException if no entity has been found at desired coordinates
+             * \throw OutOfRangeException when entity coordinates are out of location range
              */
             void Location::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
                 if ((entityCoordinates.x >= this->length) || (entityCoordinates.y >= this->height) || (entityCoordinates.x < 0) || (entityCoordinates.y < 0)) {
@@ -159,6 +160,7 @@ namespace RoguEngine {
              * \param at The coordinates of left top corner of pasting place
              * \throw DimensionIncompatibilityException if the structure does not fit the location
              * \throw InvalidStructurePastingPlaceException if the structure will cause Segmentation fault if it is pasted at desired place
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             void Location::pasteStructure(Structure structure, TypesPackage::Coordinates at) {
                 int structureHeight = structure.getHeight(), structureLength = structure.getLength();

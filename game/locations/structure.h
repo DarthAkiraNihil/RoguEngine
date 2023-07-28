@@ -4,6 +4,8 @@
 #include <game/locations/tile.h>
 #include <game/types/typesPackage.h>
 #include <game/entity/entityPackage.h>
+#include <game/gamecoreexceptions.h>
+#include <fmt/format.h>
 
 #ifndef ROGUENGINE_STRUCTURE_H
 #define ROGUENGINE_STRUCTURE_H
@@ -51,9 +53,14 @@ namespace RoguEngine {
              * \details Standard Structure tile getter
              * \param coordinates The coordinates of a tile
              * \return The tile of a Structure on desired coordinates
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             Tile Structure::getTile(TypesPackage::Coordinates coordinates) {
-                return this->structureTiles[coordinates.y][coordinates.x];
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range when addressing structure tiles array");
+                } else {
+                    return this->structureTiles[coordinates.y][coordinates.x];
+                }
             }
 
             /**
@@ -61,14 +68,20 @@ namespace RoguEngine {
              * \details Standard Structure entity getter
              * \param coordinates The coordinates of an entity
              * \return The entity of a Structure on desired coordinates
+             * \throw NoEntityFoundException if no entity has been found at desired coordinates
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             EntityPackage::Entity Structure::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
-                for (int i = 0; i < this->structureEntities.size(); i++) {
-                    if (this->structureEntities.at(i).getCoordinates() == coordinates) {
-                        return this->structureEntities.at(i);
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+                } else {
+                    for (EntityPackage::Entity& structureEntity : this->structureEntities) {
+                        if (structureEntity.getCoordinates() == coordinates) {
+                            return structureEntity;
+                        }
                     }
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", coordinates.x, coordinates.y));
                 }
-                throw std::string("FUCK1234");
             }
 
             /**
@@ -94,9 +107,14 @@ namespace RoguEngine {
              * \details Standard Structure tile setter
              * \param tile A tile to paste
              * \param coordinates The coordinates of a tile to paste
+             * \throw OutOfRangeException when desired place is out of tiles array range
              */
             void Structure::setTile(Tile tile, TypesPackage::Coordinates coordinates) {
-                this->structureTiles[coordinates.y][coordinates.x] = tile;
+                if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired place coordinates");
+                } else {
+                    this->structureTiles[coordinates.y][coordinates.x] = tile;
+                }
             }
 
             /**
@@ -112,13 +130,20 @@ namespace RoguEngine {
             * \brief Structure entity remover
             * \details Standard Structure entity remover
             * \param entityCoordinates The coordinates of an entity to remove
+            * \throw NoEntityFoundException if no entity has been found at desired coordinates
+            * \throw OutOfRangeException when entity coordinates are out of location range
             */
             void Structure::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
-                for (auto it = this->structureEntities.begin(); it != this->structureEntities.end(); it++) {
-                    if (it->getCoordinates() == entityCoordinates) {
-                        this->structureEntities.erase(it);
-                        break;
+                if ((entityCoordinates.x >= this->length) || (entityCoordinates.y >= this->height) || (entityCoordinates.x < 0) || (entityCoordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+                } else {
+                    for (auto it = this->structureEntities.begin(); it != this->structureEntities.end(); it++) {
+                        if (it->getCoordinates() == entityCoordinates) {
+                            this->structureEntities.erase(it);
+                            break;
+                        }
                     }
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", entityCoordinates.x, entityCoordinates.y));
                 }
             }
         }

@@ -1,6 +1,9 @@
 //
 // Created by EgrZver on 24.07.2023.
 //
+#include <SFML/Graphics.hpp>
+#include <game/gamecoreexceptions.h>
+#include <fmt/format.h>
 
 #ifndef ROGUENGINE_RGBTRINITY_H
 #define ROGUENGINE_RGBTRINITY_H
@@ -25,6 +28,27 @@ namespace RoguEngine {
                 }
             };
 
+            sf::Color convertToSFML(RGBAData color) {
+                if (
+                    (color.r > 255) ||
+                    (color.g > 255) ||
+                    (color.b > 255) ||
+                    (color.alpha > 255) ||
+                    (color.r < 0) ||
+                    (color.g < 0) ||
+                    (color.b < 0) ||
+                    (color.alpha < 0)
+                    ) {
+                    throw CoreExceptions::InvalidColorException(
+                        fmt::format("The color with the following parameters does not exist: r: {}, g: {}, b: {}, alpha: {}",
+                        color.r,
+                        color.g,
+                        color.b,
+                        color.alpha));
+                } else {
+                    return sf::Color(color.r, color.g, color.b, color.alpha);
+                }
+            }
             const RGBAData NoColor = {255, 255, 255, 255};
         }
     }

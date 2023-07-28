@@ -71,6 +71,15 @@ namespace RoguEngine {
                     const char *what() const noexcept override { return message_.c_str(); }
             };
 
+            class InvalidColorException : public std::exception {
+                private:
+                    std::string message_;
+                public:
+                    explicit InvalidColorException(const std::string &message);
+
+                    const char *what() const noexcept override { return message_.c_str(); }
+            };
+
             NoEntityFoundException::NoEntityFoundException(const std::string &message) : message_(message) {}
 
             DimensionIncompatibilityException::DimensionIncompatibilityException(const std::string &message) : message_(message) {}
@@ -78,6 +87,8 @@ namespace RoguEngine {
             InvalidStructurePastingPlaceException::InvalidStructurePastingPlaceException(const std::string &message) : message_(message) {}
 
             OutOfRangeException::OutOfRangeException(const std::string &message) : message_(message) {}
+
+            InvalidColorException::InvalidColorException(const std::string &message) : message_(message) {}
         }
     }
 }
