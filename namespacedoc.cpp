@@ -14,6 +14,14 @@ namespace RoguEngine {
      */
     namespace GameCore {
         /**
+         * \brief Namespace of Game core exceptions
+         * \details Contains definitions all exceptions used in this core. Sometimes its exceptions are used in other cores (by throwing the exceptions)
+         */
+        namespace CoreExceptions {
+
+        }
+
+        /**
          * \brief Package of Entities
          * \details Contains definitions of all classes that are inherited from base entity class (including it).
          * Package file - entityPackage.h
@@ -44,6 +52,14 @@ namespace RoguEngine {
      * \details The namespace of Graphic Core of the library. Contains packages (as namespaces) that are used to release a game's GUI
      */
     namespace GraphicCore {
+        /**
+         * \brief Namespace of Graphic core exceptions
+         * \details Contains definitions all exceptions used in this core
+         */
+        namespace CoreExceptions {
+
+        }
+
         /**
          * \brief Package of SemiConsole
          * \details Contains definitions SemiConsole and SemiConsoleFont classes that are used to draw a game window
