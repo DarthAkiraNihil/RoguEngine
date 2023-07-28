@@ -4,11 +4,15 @@
 #include <stdexcept>
 
 #ifndef ROGUENGINE_GRAPHICCOREEXCEPTIONS_H
-#define ROGUENGINE_GRAPGICCOREEXCEPTIONS_H
+#define ROGUENGINE_GRAPHICCOREEXCEPTIONS_H
 
 namespace RoguEngine {
     namespace GraphicCore {
         namespace CoreExceptions {
+            /**
+             * \brief NoFileFound Exception
+             * \details This exception is thrown when it's not possible to load a file because it does not exist
+             */
             class NoFileFoundException : public std::exception {
                 private:
                     std::string message_;
@@ -18,6 +22,10 @@ namespace RoguEngine {
                     const char *what() const noexcept override { return message_.c_str(); }
             };
 
+            /**
+             * \brief InvalidFontImageSize Exception
+             * \details This exception is thrown when you try to load a font image file but its size is invalid that may cause addressing non-existent image pixels or loading the font with corrupted symbols
+             */
             class InvalidFontImageSizeException : public std::exception {
                 private:
                     std::string message_;
@@ -27,6 +35,10 @@ namespace RoguEngine {
                     const char *what() const noexcept override { return message_.c_str(); }
             };
 
+            /**
+             * \brief InvalidFontLetterID Exception
+             * \details This exception is thrown when ypu try to draw a symbol with ID less than 0 or greater than 255
+             */
             class InvalidFontLetterIDException : public std::exception {
                 private:
                     std::string message_;
@@ -36,6 +48,10 @@ namespace RoguEngine {
                     const char *what() const noexcept override { return message_.c_str(); }
             };
 
+            /**
+             * \brief InvalidDrawingCoordinates Exception
+             * \details This exception is thrown when drawing coordinates are out of range or drawing cannot be applied because a game object won't fit the SemiConsole
+             */
             class InvalidDrawingCoordinatesException : public std::exception {
                 private:
                     std::string message_;
@@ -57,4 +73,4 @@ namespace RoguEngine {
 }
 
 
-#endif //ROGUENGINE_COREEXCEPTIONS_H
+#endif //ROGUENGINE_GRAPHICCOREEXCEPTIONS_H
