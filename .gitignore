@@ -14,3 +14,9 @@
 /include/SFML/doc/
 /include/SFML/bin/
 /include/SFML/lib/
+/include/fmt/README.rst
+/include/fmt/CONTRIBUTING.md
+/include/fmt/ChangeLog.rst
+/include/fmt/test/
+/include/fmt/support/
+/include/fmt/doc/
