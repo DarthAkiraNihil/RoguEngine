@@ -81,6 +81,15 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    class InvalidFOVPlaceException : public std::exception {
+        private:
+            std::string message_;
+        public:
+            explicit InvalidFOVPlaceException(const std::string &message);
+
+            const char *what() const noexcept override { return message_.c_str(); }
+    };
+
     NoEntityFoundException::NoEntityFoundException(const std::string &message) : message_(message) {}
 
     DimensionIncompatibilityException::DimensionIncompatibilityException(const std::string &message) : message_(
@@ -94,6 +103,8 @@ namespace RoguEngine::GameCore::CoreExceptions {
     InvalidColorException::InvalidColorException(const std::string &message) : message_(message) {}
 
     InvalidMovingCoordinatesException::InvalidMovingCoordinatesException(const std::string &message) : message_(message) {}
+
+    InvalidFOVPlaceException::InvalidFOVPlaceException(const std::string &message) : message_(message) {}
 }
 
 

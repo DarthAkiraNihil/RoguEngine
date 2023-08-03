@@ -214,6 +214,14 @@ namespace RoguEngine {
                 }
             }
 
+            RoguEnigine::GameCore::TypesPackage::FOVStatus Location::getFOVStatusAt(TypesPackage::Coordinates where) {
+                if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {
+                    throw CoreExceptions::InvalidFOVPlaceException("Selected place does not exist");
+                } else {
+                    return this->playerFOV[where.y][where.x];
+                }
+            }
+
         }
     }
 }
