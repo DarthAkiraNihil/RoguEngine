@@ -197,6 +197,16 @@ namespace RoguEngine {
                 }
             }
 
+            /**
+             * \brief Entity mover
+             * \details Moves an entity in a location. Before moving it checks if the data is correct (i.e. if the coordinates indicates a valid place).
+             * The entity won't be moved if an impassable tile is on its way.
+             * \param source The coordinates of the beginning of a place
+             * \param direction Moving direction
+             * \throw InvalidMovingCoordinatesException if source coordinates are out of location range
+             * \throw NoEntityFoundException if no entity has been found at source coordinates
+             * \return true if the entity has been moved, else false
+             */
             bool Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
                 if ((source.x >= this->length) || (source.y >= this->height) || (source.x < 0) || (source.y < 0)) {
                     throw CoreExceptions::InvalidMovingCoordinatesException("Invalid source coordinates for this location");
