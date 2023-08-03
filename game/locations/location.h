@@ -210,7 +210,14 @@ namespace RoguEngine {
             bool Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
                 if ((source.x >= this->length) || (source.y >= this->height) || (source.x < 0) || (source.y < 0)) {
                     throw CoreExceptions::InvalidMovingCoordinatesException("Invalid source coordinates for this location");
-                } else {
+                } else if (
+                    ((source.x == 0) && (direction.x == -1)) ||
+                    ((source.x == this->length - 1) && (direction.x == 1)) ||
+                    ((source.y == 0) && (direction.y == -1)) ||
+                    ((source.y == this->height - 1) && (direction.y == 1))
+                ) {
+                    return false;
+                }else {
                     for (EntityPackage::Entity& locationEntity : this->locationEntities) {
                         TypesPackage::Coordinates entityCoordinates = locationEntity.getCoordinates();
                         if (entityCoordinates == source) {
