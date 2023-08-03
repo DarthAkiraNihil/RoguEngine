@@ -37,9 +37,9 @@ namespace RoguEngine {
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
-                    void moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
+                    bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
                     RoguEnigine::GameCore::TypesPackage::FOVStatus getFOVStatusAt(TypesPackage::Coordinates where);
-                    void calculateFOV();
+                    // calculateFOV();
             };
 
             /**
@@ -197,7 +197,7 @@ namespace RoguEngine {
                 }
             }
 
-            void Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
+            bool Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
                 if ((source.x >= this->length) || (source.y >= this->height) || (source.x < 0) || (source.y < 0)) {
                     throw CoreExceptions::InvalidMovingCoordinatesException("Invalid source coordinates for this location");
                 } else {
@@ -206,8 +206,10 @@ namespace RoguEngine {
                         if (entityCoordinates == source) {
                             if (this->getTile({entityCoordinates.x + direction.x, entityCoordinates.y + direction.y}).isPassable()) {
                                 locationEntity.move(direction);
+                                return true;
+                            } else {
+                                return false;
                             }
-                            return;
                         }
                     }
                     throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", source.x, source.y));
