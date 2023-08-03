@@ -207,7 +207,7 @@ namespace RoguEngine {
                             if (this->getTile({entityCoordinates.x + direction.x, entityCoordinates.y + direction.y}).isPassable()) {
                                 locationEntity.move(direction);
                             }
-                            break;
+                            return;
                         }
                     }
                     throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", source.x, source.y));

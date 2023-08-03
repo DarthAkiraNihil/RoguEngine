@@ -7,6 +7,7 @@
 #include <graphic/semiconsole/scfont.h>
 #include <game/types/typesPackage.h>
 #include <game/locations/locationsPackage.h>
+#include <game/gamecoreexceptions.h>
 //#include <graphic/renderers/gameobjectrenderer.h>
 #include <iostream>
 
@@ -110,11 +111,20 @@ namespace RoguEngine {
                 } else {
                     for (int i = 0; i < location.getHeight(); i++) {
                         for (int j = 0; j < location.getLength(); j++) {
-                            sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
-                            tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                            this->window.draw(tmp);
+                            try {
+                                GameCore::EntityPackage::Entity toDraw = location.getEntityFromPlace({j, i});
+                                sf::Sprite tt = toDraw.getSprite();
+                                tt.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                                this->window.draw(tt); // todo remove this I don't like it, make iterator list instead
+                            } catch (GameCore::CoreExceptions::NoEntityFoundException) {
+                                sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
+                                tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                                this->window.draw(tmp);
+                            }
+
                         }
                     }
+
                 }
 
             }
