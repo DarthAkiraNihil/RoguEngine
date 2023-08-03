@@ -93,7 +93,7 @@ namespace RoguEngine::GameCore::CoreExceptions {
 
     InvalidColorException::InvalidColorException(const std::string &message) : message_(message) {}
 
-    InvalidMovingCoordinatesExceptionolorException::InvalidMovingCoordinatesExceptionColorException(const std::string &message) : message_(message) {}
+    InvalidMovingCoordinatesException::InvalidMovingCoordinatesException(const std::string &message) : message_(message) {}
 }
 
 
