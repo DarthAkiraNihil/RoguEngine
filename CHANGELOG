@@ -2,7 +2,16 @@ RoguEngine changelog
 
 Version 0.2.0 [not a release] (unfinished)
 
+* Target: FOV
+* Target: Monsters
+* Optional target (for now): Drawers (for location)
+
 * Feature: entity moving at a location
+* Feature: full-color location rendering
+* Feature: rendering a location with entities
+* Fixed: inverted directions' coordinates
+* Fixed: dimension inversion when pasting a structure
+
 
 Version 0.1.0 [not a release] (28.07.2023)
 
