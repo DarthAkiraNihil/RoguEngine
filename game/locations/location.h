@@ -25,6 +25,7 @@ namespace RoguEngine {
                 private:
                     int height, length;
                     Tile** locationMap;
+                    RoguEnigine::GameCore::TypesPackage::FOVStatus** playerFOV;
                     std::vector<EntityPackage::Entity> locationEntities;
                 public:
                     explicit Location(TypesPackage::Pair size);
@@ -36,7 +37,9 @@ namespace RoguEngine {
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
-                    void moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates destination);
+                    void moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
+                    RoguEnigine::GameCore::TypesPackage::FOVStatus getFOVStatusAt(TypesPackage::Coordinates where);
+                    void calculateFOV();
             };
 
             /**
@@ -48,9 +51,19 @@ namespace RoguEngine {
                 this->height = size.y;
                 this->length = size.x;
                 this->locationMap = new Tile* [height];
-                for (int i = 0; i < length; i++) {
+                for (int i = 0; i < height; i++) {
                     this->locationMap[i] = new Tile[length];
                 }
+                this->playerFOV = new RoguEnigine::GameCore::TypesPackage::FOVStatus* [height];
+                for (int i = 0; i < height; i++) {
+                    this->playerFOV[i] = new RoguEnigine::GameCore::TypesPackage::FOVStatus[length];
+                }
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < length; j++) {
+                        this->playerFOV[i][j] = RoguEnigine::GameCore::TypesPackage::NotVisited;
+                    }
+                }
+
             }
 
             /**
