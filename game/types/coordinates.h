@@ -21,15 +21,15 @@ namespace RoguEngine::GameCore::TypesPackage {
         }
     };
 
-    const Coordinates DIRECTION_NORTH = {0, 1};
-    const Coordinates DIRECTION_SOUTH = {0, -1};
-    const Coordinates DIRECTION_WEST = {1, 0};
-    const Coordinates DIRECTION_EAST = {-1, 0};
+    const Coordinates DIRECTION_NORTH = {0, -1};
+    const Coordinates DIRECTION_SOUTH = {0, 1};
+    const Coordinates DIRECTION_WEST = {-1, 0};
+    const Coordinates DIRECTION_EAST = {1, 0};
 
-    const Coordinates DIRECTION_NORTH_WEST = {-1 , 1};
-    const Coordinates DIRECTION_NORTH_EAST = {1 , 1};
-    const Coordinates DIRECTION_SOUTH_WEST = {-1 , -1};
-    const Coordinates DIRECTION_SOUTH_EAST = {1 , -1};
+    const Coordinates DIRECTION_NORTH_WEST = {1 , -1};
+    const Coordinates DIRECTION_NORTH_EAST = {-1 , -1};
+    const Coordinates DIRECTION_SOUTH_WEST = {1 , 1};
+    const Coordinates DIRECTION_SOUTH_EAST = {-1 , 1};
 
     typedef Coordinates Pair; /// A typedef to improve code readability. Use when you need to store just a pair of ints that is not coordinates.
 }
