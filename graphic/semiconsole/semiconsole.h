@@ -111,10 +111,12 @@ namespace RoguEngine {
                 } else {
                     for (int i = 0; i < location.getHeight(); i++) {
                         for (int j = 0; j < location.getLength(); j++) {
+                            if (location.getFOVStatusAt({j, i})) {
+                                sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
+                                tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                                this->window.draw(tmp);
+                            }
 
-                            sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
-                            tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                            this->window.draw(tmp);
 
 
                         }

@@ -29,7 +29,7 @@ namespace RoguEngine {
                     RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Entity> locationEntities;
-                    bool doFov(TypesPackage::Coordinates at);
+                    void doFov(float x, float y);
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
@@ -291,21 +291,20 @@ namespace RoguEngine {
                     return this->visitedMap[where.y][where.x];
                 }
             }
-            bool Location::doFov(TypesPackage::Coordinates at) {
-                float
-                vx = at.x - this->assignedPlayer->getCoordinates().x,
-                vy = at.y - this->assignedPlayer->getCoordinates().y,
-                ox = (float) at.x + 0.5f,
-                oy = (float) at.y + 0.5f;
-                float l = sqrt((vx*vx) + (vy * vy));
-                vx /= l; vy /= l;
-                for (int i = 0; i < (int) l; i++) {
-                    if (!(this->locationMap[(int) oy][(int) ox].isTrasparent())) {
-                        return false;
+            void Location::doFov(float x, float y) {
+                float ox = (float) this->assignedPlayer->getCoordinates().x+0.5f;
+                float oy = (float) this->assignedPlayer->getCoordinates().y+0.5f;
+                for(int i = 0; i < this->lightLevel; i++) {
+                    if ((int) oy >= 0 && (int) ox >= 0 && (int) oy < this->height && (int) ox < this->length) {
+                        this->playerFOV[(int) oy][(int) ox] = true;//Set the tile to visible.
+                        if(!this->locationMap[(int) oy][(int) ox].isTrasparent()) return;
+                        ox+=x;
+                        oy+=y;
+                    } else {
+                        return;
                     }
-                    ox += vx; oy += vy;
+
                 }
-                return true;
             }
 
 
@@ -313,14 +312,10 @@ namespace RoguEngine {
                 for (int i = 0; i < this->height; i++) {
                     for (int j = 0; j < this->length; j++) {
                         this->playerFOV[i][j] = false;
-                        float
-                        x = (float) (j - this->assignedPlayer->getCoordinates().x),
-                        y = (float) (i - this->assignedPlayer->getCoordinates().y);
-                        float l = sqrt((x*x) + (y*y));
-                        if (l < this->lightLevel && this->doFov({j, i})) {
-                            this->playerFOV = true;
-                        }
                     }
+                }
+                for(int i = 0; i < 360; i++) {
+                    this->doFov(cos((float)i*0.01745f), sin((float)i*0.01745f));
                 }
             }
 
