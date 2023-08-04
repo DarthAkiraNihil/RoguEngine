@@ -25,21 +25,29 @@ namespace RoguEngine {
                 private:
                     int height, length, lightLevel;
                     Tile** locationMap;
-                    RoguEnigine::GameCore::TypesPackage::FOVStatus** playerFOV;
+                    bool** playerFOV;
+                    RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
+                    EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Entity> locationEntities;
-                    void doFov();
+                    bool doFov();
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
                     EntityPackage::Entity getEntityFromPlace(TypesPackage::Coordinates coordinates);
                     int getHeight();
                     int getLength();
+                    int getLightLevel();
+                    int setLightLevel(int newLightLevel);
+                    EntityPackage::Player* getAssignedPlayer();
+                    void assignPlayer(EntityPackage::Player* assigned);
                     void setTile(Tile tile, TypesPackage::Coordinates coordinates);
                     void addEntity(EntityPackage::Entity entity);
                     void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
                     bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
-                    RoguEnigine::GameCore::TypesPackage::FOVStatus getFOVStatusAt(TypesPackage::Coordinates where);
+                    bool movePlayer(TypesPackage::Coordinates direction);
+                    bool getFOVStatusAt(TypesPackage::Coordinates where);
+                    RoguEnigine::GameCore::TypesPackage::VisitedStatus getVisitedStatusAt(TypesPackage::Coordinates where);
                     void calculateFOV();
             };
 
@@ -51,17 +59,28 @@ namespace RoguEngine {
             Location::Location(TypesPackage::Pair size) {
                 this->height = size.y;
                 this->length = size.x;
+                this->lightLevel = 1;
                 this->locationMap = new Tile* [height];
                 for (int i = 0; i < height; i++) {
                     this->locationMap[i] = new Tile[length];
                 }
-                this->playerFOV = new RoguEnigine::GameCore::TypesPackage::FOVStatus* [height];
+                this->playerFOV = new bool* [height];
                 for (int i = 0; i < height; i++) {
-                    this->playerFOV[i] = new RoguEnigine::GameCore::TypesPackage::FOVStatus[length];
+                    this->playerFOV[i] = new bool[length];
                 }
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < length; j++) {
-                        this->playerFOV[i][j] = RoguEnigine::GameCore::TypesPackage::NotVisited;
+                        this->playerFOV[i][j] = false;
+                    }
+                }
+
+                this->visitedMap = new RoguEnigine::GameCore::TypesPackage::VisitedStatus* [height];
+                for (int i = 0; i < height; i++) {
+                    this->visitedMap[i] = new RoguEnigine::GameCore::TypesPackage::VisitedStatus[length];
+                }
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < length; j++) {
+                        this->visitedMap[i][j] = RoguEnigine::GameCore::TypesPackage::VisitedStatus::NotVisited;
                     }
                 }
 
@@ -120,6 +139,28 @@ namespace RoguEngine {
              */
             int Location::getLength() {
                 return this->length;
+            }
+
+            /**
+             * \brief Location light level getter
+             * \details Standard Location light level getter
+             * \return The light level of a location
+             */
+            int Location::getLightLevel() {
+                return this->lightLevel;
+            }
+
+            /**
+             * \brief Location light level setter
+             * \details Standard Location light level setter
+             * \throw InvalidLightLevelException if the passed light level is not positive
+             */
+            int Location::setLightLevel(int newLightLevel) {
+                if (newLightLevel <= 0) {
+                    throw CoreExceptions::InvalidLightLevelException("The light level has to be positive");
+                } else {
+                    this->lightLevel = newLightLevel;
+                }
             }
 
             /**
@@ -234,7 +275,7 @@ namespace RoguEngine {
                 }
             }
 
-            RoguEnigine::GameCore::TypesPackage::FOVStatus Location::getFOVStatusAt(TypesPackage::Coordinates where) {
+            bool Location::getFOVStatusAt(TypesPackage::Coordinates where) {
                 if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {
                     throw CoreExceptions::InvalidFOVPlaceException("Selected place does not exist");
                 } else {
@@ -242,6 +283,49 @@ namespace RoguEngine {
                 }
             }
 
+            RoguEnigine::GameCore::TypesPackage::VisitedStatus Location::getVisitedStatusAt(
+                TypesPackage::Coordinates where) {
+                if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {
+                    throw CoreExceptions::InvalidFOVPlaceException("Selected place does not exist");
+                } else {
+                    return this->visitedMap[where.y][where.x];
+                }
+            }
+            bool Location::doFov() {
+
+            }
+
+
+            void Location::calculateFOV() {
+
+            }
+
+            EntityPackage::Player* Location::getAssignedPlayer() {
+                return this->assignedPlayer;
+            }
+
+            void Location::assignPlayer(EntityPackage::Player* assigned) {
+                this->assignedPlayer = assigned;
+            }
+
+            bool Location::movePlayer(TypesPackage::Coordinates direction) {
+                TypesPackage::Coordinates source = this->assignedPlayer->getCoordinates();
+                if (
+                    ((source.x == 0) && (direction.x == -1)) ||
+                    ((source.x == this->length - 1) && (direction.x == 1)) ||
+                    ((source.y == 0) && (direction.y == -1)) ||
+                    ((source.y == this->height - 1) && (direction.y == 1))
+                    ) {
+                    return false;
+                } else {
+                    if (this->getTile({source.x + direction.x, source.y + direction.y}).isPassable()) {
+                        this->assignedPlayer->move(direction);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
         }
     }
 }

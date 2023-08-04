@@ -111,20 +111,18 @@ namespace RoguEngine {
                 } else {
                     for (int i = 0; i < location.getHeight(); i++) {
                         for (int j = 0; j < location.getLength(); j++) {
-                            try {
-                                GameCore::EntityPackage::Entity toDraw = location.getEntityFromPlace({j, i});
-                                sf::Sprite tt = toDraw.getSprite();
-                                tt.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                                this->window.draw(tt); // todo remove this I don't like it, make iterator list instead
-                            } catch (GameCore::CoreExceptions::NoEntityFoundException) {
-                                sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
-                                tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                                this->window.draw(tmp);
-                            }
+
+                            sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
+                            tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                            this->window.draw(tmp);
+
 
                         }
                     }
-
+                    sf::Sprite player = location.getAssignedPlayer()->getSprite();
+                    GameCore::TypesPackage::Coordinates playerCoordinates = location.getAssignedPlayer()->getCoordinates();
+                    player.setPosition((where.x + playerCoordinates.x) * 16, (where.y + playerCoordinates.y) * 16);
+                    this->window.draw(player);
                 }
 
             }
