@@ -25,8 +25,8 @@ namespace RoguEngine {
                 private:
                     int height, length, lightLevel;
                     Tile** locationMap;
-                    bool** playerFOV;
-                    RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
+                    bool** playerFOV, **visitedMap;
+                    //RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Entity> locationEntities;
                     void doFov(float x, float y);
@@ -47,7 +47,7 @@ namespace RoguEngine {
                     bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
                     bool movePlayer(TypesPackage::Coordinates direction);
                     bool getFOVStatusAt(TypesPackage::Coordinates where);
-                    RoguEnigine::GameCore::TypesPackage::VisitedStatus getVisitedStatusAt(TypesPackage::Coordinates where);
+                    bool getVisitedStatusAt(TypesPackage::Coordinates where);
                     void calculateFOV();
             };
 
@@ -74,13 +74,13 @@ namespace RoguEngine {
                     }
                 }
 
-                this->visitedMap = new RoguEnigine::GameCore::TypesPackage::VisitedStatus* [height];
+                this->visitedMap = new bool* [height];
                 for (int i = 0; i < height; i++) {
-                    this->visitedMap[i] = new RoguEnigine::GameCore::TypesPackage::VisitedStatus[length];
+                    this->visitedMap[i] = new bool[length];
                 }
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < length; j++) {
-                        this->visitedMap[i][j] = RoguEnigine::GameCore::TypesPackage::VisitedStatus::NotVisited;
+                        this->visitedMap[i][j] = false;
                     }
                 }
 
@@ -283,7 +283,7 @@ namespace RoguEngine {
                 }
             }
 
-            RoguEnigine::GameCore::TypesPackage::VisitedStatus Location::getVisitedStatusAt(
+            bool Location::getVisitedStatusAt(
                 TypesPackage::Coordinates where) {
                 if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {
                     throw CoreExceptions::InvalidFOVPlaceException("Selected place does not exist");
@@ -297,6 +297,7 @@ namespace RoguEngine {
                 for(int i = 0; i < this->lightLevel; i++) {
                     if ((int) oy >= 0 && (int) ox >= 0 && (int) oy < this->height && (int) ox < this->length) {
                         this->playerFOV[(int) oy][(int) ox] = true;//Set the tile to visible.
+                        if (!this->visitedMap[(int) oy][(int) ox]) this->visitedMap[(int) oy][(int) ox] = true;
                         if(!this->locationMap[(int) oy][(int) ox].isTrasparent()) return;
                         ox+=x;
                         oy+=y;
