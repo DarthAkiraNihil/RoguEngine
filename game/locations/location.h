@@ -23,10 +23,11 @@ namespace RoguEngine {
              */
             class Location {
                 private:
-                    int height, length;
+                    int height, length, lightLevel;
                     Tile** locationMap;
                     RoguEnigine::GameCore::TypesPackage::FOVStatus** playerFOV;
                     std::vector<EntityPackage::Entity> locationEntities;
+                    void doFov();
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
@@ -39,7 +40,7 @@ namespace RoguEngine {
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
                     bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
                     RoguEnigine::GameCore::TypesPackage::FOVStatus getFOVStatusAt(TypesPackage::Coordinates where);
-                    // calculateFOV();
+                    void calculateFOV();
             };
 
             /**

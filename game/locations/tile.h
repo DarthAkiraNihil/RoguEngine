@@ -23,15 +23,16 @@ namespace RoguEngine {
                     sf::Sprite tileSprite;
                     std::wstring name;
                     TypesPackage::RGBAData color;
-                    bool passable;
+                    bool passable, transparent;
                 public:
                     Tile() = default;
-                    Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor);
+                    Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, bool isTransparent, TypesPackage::RGBAData baseColor);
                     int getID();
                     std::wstring getName();
                     sf::Sprite getRawSprite();
                     sf::Sprite getRenderedSprite();
                     bool isPassable();
+                    bool isTrasparent();
                     void setColor(TypesPackage::RGBAData newColor);
             };
 
@@ -39,17 +40,18 @@ namespace RoguEngine {
             /**
              * \brief The default class constructor
              * \details The default Tile constructor
-             * \param tileSprite The sptire of a tile
+             * \param tileSprite The sprite of a tile
              * \param name The name of a tile. Used in game logging
              * \param isPassable Indicator if an entity can pass through a tile
              * \param baseColor The color of a tile
              */
-            Tile::Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, TypesPackage::RGBAData baseColor) {
+            Tile::Tile(int id, sf::Sprite tileSprite, std::wstring name, bool isPassable, bool isTransparent, TypesPackage::RGBAData baseColor) {
                 this->id = id;
                 this->tileSprite = tileSprite;
                 this->name = name;//std::move(name);
                 this->passable = isPassable;
                 this->color = baseColor;
+                this->transparent = isTransparent;
             }
 
             int Tile::getID() {
@@ -71,6 +73,15 @@ namespace RoguEngine {
              */
             bool Tile::isPassable() {
                 return this->passable;
+            }
+
+            /**
+             * \brief Transparency indicator getter
+             * \details Standard Tile's transparency getter
+             * \return The transparency indicator of a tile
+             */
+            bool Tile::isTrasparent() {
+                return this->transparent;
             }
 
             /**
