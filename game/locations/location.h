@@ -29,7 +29,7 @@ namespace RoguEngine {
                     RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Entity> locationEntities;
-                    bool doFov();
+                    bool doFov(TypesPackage::Coordinates at);
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
@@ -291,13 +291,37 @@ namespace RoguEngine {
                     return this->visitedMap[where.y][where.x];
                 }
             }
-            bool Location::doFov() {
-
+            bool Location::doFov(TypesPackage::Coordinates at) {
+                float
+                vx = at.x - this->assignedPlayer->getCoordinates().x,
+                vy = at.y - this->assignedPlayer->getCoordinates().y,
+                ox = (float) at.x + 0.5f,
+                oy = (float) at.y + 0.5f;
+                float l = sqrt((vx*vx) + (vy * vy));
+                vx /= l; vy /= l;
+                for (int i = 0; i < (int) l; i++) {
+                    if (!(this->locationMap[(int) oy][(int) ox].isTrasparent())) {
+                        return false;
+                    }
+                    ox += vx; oy += vy;
+                }
+                return true;
             }
 
 
             void Location::calculateFOV() {
-
+                for (int i = 0; i < this->height; i++) {
+                    for (int j = 0; j < this->length; j++) {
+                        this->playerFOV[i][j] = false;
+                        float
+                        x = (float) (j - this->assignedPlayer->getCoordinates().x),
+                        y = (float) (i - this->assignedPlayer->getCoordinates().y);
+                        float l = sqrt((x*x) + (y*y));
+                        if (l < this->lightLevel && this->doFov({j, i})) {
+                            this->playerFOV = true;
+                        }
+                    }
+                }
             }
 
             EntityPackage::Player* Location::getAssignedPlayer() {
