@@ -10,6 +10,7 @@ Version 0.2.0 [not a release] (unfinished)
 * Feature: full-color location rendering
 * Feature: rendering a location with entities
 * Feature: FOV using Ray casting, Visited tiles map
+* Feature: Tile transparency
 * Fixed: segmentation fault when creating a location
 * Fixed: inverted directions' coordinates
 * Fixed: dimension inversion when pasting a structure
