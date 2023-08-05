@@ -2,9 +2,10 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <game/locations/tile.h>
+
 #include <game/types/typesPackage.h>
 #include <game/locations/structure.h>
-#include <game/entity/entity.h>
+#include <game/entity/entityPackage.h>
 #include <game/gamecoreexceptions.h>
 #include <iostream>
 #include <vector>
@@ -28,12 +29,12 @@ namespace RoguEngine {
                     bool** playerFOV, **visitedMap;
                     //RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
-                    std::vector<EntityPackage::Entity> locationEntities;
+                    std::vector<EntityPackage::Monster> locationMonsters;
                     void doFov(float x, float y);
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
-                    EntityPackage::Entity getEntityFromPlace(TypesPackage::Coordinates coordinates);
+                    EntityPackage::Monster getMonsterFromPlace(TypesPackage::Coordinates coordinates);
                     int getHeight();
                     int getLength();
                     int getLightLevel();
@@ -41,8 +42,8 @@ namespace RoguEngine {
                     EntityPackage::Player* getAssignedPlayer();
                     void assignPlayer(EntityPackage::Player* assigned);
                     void setTile(Tile tile, TypesPackage::Coordinates coordinates);
-                    void addEntity(EntityPackage::Entity entity);
-                    void removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates);
+                    void addMonster(EntityPackage::Monster monster);
+                    void removeMonsterFromPlace(TypesPackage::Coordinates monsterCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
                     bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
                     bool movePlayer(TypesPackage::Coordinates direction);
@@ -109,16 +110,16 @@ namespace RoguEngine {
              * \throw NoEntityFoundException if no entity has been found at desired coordinates
              * \throw OutOfRangeException when desired place is out of tiles array range
              */
-            EntityPackage::Entity Location::getEntityFromPlace(TypesPackage::Coordinates coordinates) {
+            EntityPackage::Monster Location::getMonsterFromPlace(TypesPackage::Coordinates coordinates) {
                 if ((coordinates.x >= this->length) || (coordinates.y >= this->height) || (coordinates.x < 0) || (coordinates.y < 0)) {
-                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired monster coordinates");
                 } else {
-                    for (EntityPackage::Entity& locationEntity : this->locationEntities) {
-                        if (locationEntity.getCoordinates() == coordinates) {
-                            return locationEntity;
+                    for (EntityPackage::Monster& locationMonster : this->locationMonsters) {
+                        if (locationMonster.getCoordinates() == coordinates) {
+                            return locationMonster;
                         }
                     }
-                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", coordinates.x, coordinates.y));
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No monster has been found at this place: x: {}, y: {}", coordinates.x, coordinates.y));
                 }
 
             }
@@ -183,8 +184,8 @@ namespace RoguEngine {
              * \details Standard Location entity adder
              * \param entity An entity to add to a location
              */
-            void Location::addEntity(EntityPackage::Entity entity) {
-                this->locationEntities.push_back(entity);
+            void Location::addMonster(EntityPackage::Monster monster) {
+                this->locationMonsters.push_back(monster);
             }
 
             /**
@@ -194,17 +195,17 @@ namespace RoguEngine {
              * \throw NoEntityFoundException if no entity has been found at desired coordinates
              * \throw OutOfRangeException when entity coordinates are out of location range
              */
-            void Location::removeEntityFromPlace(TypesPackage::Coordinates entityCoordinates) {
-                if ((entityCoordinates.x >= this->length) || (entityCoordinates.y >= this->height) || (entityCoordinates.x < 0) || (entityCoordinates.y < 0)) {
-                    throw CoreExceptions::OutOfRangeException("Out of range in desired entity coordinates");
+            void Location::removeMonsterFromPlace(TypesPackage::Coordinates monsterCoordinates) {
+                if ((monsterCoordinates.x >= this->length) || (monsterCoordinates.y >= this->height) || (monsterCoordinates.x < 0) || (monsterCoordinates.y < 0)) {
+                    throw CoreExceptions::OutOfRangeException("Out of range in desired monster coordinates");
                 } else {
-                    for (auto it = this->locationEntities.begin(); it != this->locationEntities.end(); it++) {
-                        if (it->getCoordinates() == entityCoordinates) {
-                            this->locationEntities.erase(it);
+                    for (auto it = this->locationMonsters.begin(); it != this->locationMonsters.end(); it++) {
+                        if (it->getCoordinates() == monsterCoordinates) {
+                            this->locationMonsters.erase(it);
                             break;
                         }
                     }
-                    throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", entityCoordinates.x, entityCoordinates.y));
+                    throw CoreExceptions::NoEntityFoundException(fmt::format("No monster has been found at this place: x: {}, y: {}", monsterCoordinates.x, monsterCoordinates.y));
                 }
 
             }
@@ -249,6 +250,7 @@ namespace RoguEngine {
              * \throw NoEntityFoundException if no entity has been found at source coordinates
              * \return true if the entity has been moved, else false
              */
+             /*
             bool Location::moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction) {
                 if ((source.x >= this->length) || (source.y >= this->height) || (source.x < 0) || (source.y < 0)) {
                     throw CoreExceptions::InvalidMovingCoordinatesException("Invalid source coordinates for this location");
@@ -273,7 +275,7 @@ namespace RoguEngine {
                     }
                     throw CoreExceptions::NoEntityFoundException(fmt::format("No entity has been found at this place: x: {}, y: {}", source.x, source.y));
                 }
-            }
+            }*/
 
             bool Location::getFOVStatusAt(TypesPackage::Coordinates where) {
                 if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {

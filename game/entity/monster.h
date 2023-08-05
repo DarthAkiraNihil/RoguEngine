@@ -1,7 +1,7 @@
 //
 // Created by EgrZver on 05.08.2023.
 //
-#include <game/pathfinding/randommover.h>
+//#include <game/pathfinding/randommover.h>
 #include <iostream>
 #include <game/types/typesPackage.h>
 #include <game/entity/entity.h>
