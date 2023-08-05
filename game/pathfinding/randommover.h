@@ -32,10 +32,10 @@ namespace RoguEngine {
                         return direction;
                     } else {
                         if (
-                            (source.x + direction.x < locationSize.x) ||
-                            (source.y + direction.y < locationSize.y) ||
-                            (source.x + direction.x > 0) ||
-                            (source.y + direction.y > 0)) {
+                            (source.x + direction.x < locationSize.x) &&
+                            (source.y + direction.y < locationSize.y) &&
+                            (source.x + direction.x > -1) &&
+                            (source.y + direction.y > -1)) {
                             if (passMap[source.y + direction.y][source.x + direction.x] != -1 ){
                                 return direction;
                             } else {
