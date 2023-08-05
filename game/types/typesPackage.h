@@ -9,5 +9,6 @@
 #include "entityType.h"
 #include "rgbadata.h"
 #include "fovstatus.h"
+#include "limitedpair.h"
 
 #endif //ROGUENGINE_AUXILIARY_H
