@@ -6,6 +6,7 @@
 #include <game/types/typesPackage.h>
 #include <game/locations/structure.h>
 #include <game/entity/entityPackage.h>
+#include <game/pathfinding/randommover.h>
 #include <game/gamecoreexceptions.h>
 #include <iostream>
 #include <vector>
@@ -31,6 +32,7 @@ namespace RoguEngine {
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Monster> locationMonsters;
                     void doFov(float x, float y);
+                    int** makePassMap();
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
@@ -38,14 +40,15 @@ namespace RoguEngine {
                     int getHeight();
                     int getLength();
                     int getLightLevel();
-                    int setLightLevel(int newLightLevel);
+                    void setLightLevel(int newLightLevel);
                     EntityPackage::Player* getAssignedPlayer();
                     void assignPlayer(EntityPackage::Player* assigned);
                     void setTile(Tile tile, TypesPackage::Coordinates coordinates);
                     void addMonster(EntityPackage::Monster monster);
                     void removeMonsterFromPlace(TypesPackage::Coordinates monsterCoordinates);
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
-                    bool moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
+                    // moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
+                    void moveMonsters();
                     bool movePlayer(TypesPackage::Coordinates direction);
                     bool getFOVStatusAt(TypesPackage::Coordinates where);
                     bool getVisitedStatusAt(TypesPackage::Coordinates where);
@@ -156,7 +159,7 @@ namespace RoguEngine {
              * \details Standard Location light level setter
              * \throw InvalidLightLevelException if the passed light level is not positive
              */
-            int Location::setLightLevel(int newLightLevel) {
+            void Location::setLightLevel(int newLightLevel) {
                 if (newLightLevel <= 0) {
                     throw CoreExceptions::InvalidLightLevelException("The light level has to be positive");
                 } else {
@@ -347,6 +350,50 @@ namespace RoguEngine {
                         return false;
                     }
                 }
+            }
+
+            void Location::moveMonsters() {
+                for (auto it = this->locationMonsters.begin(); it != this->locationMonsters.end(); it++) {
+                    switch ((*it).getMoverType()) {
+                        case TypesPackage::RandomDumb: {
+                            PathfindingPackage::RandomMover mover(TypesPackage::Dumb);
+                            int** passMap = this->makePassMap();
+                            (*it).move(mover.getNextMove((*it).getCoordinates(), passMap, {this->length, this->height}));
+                            for (int i = 0; i < this->height; i++) {
+                                delete [] passMap[i];
+                            }
+                            delete [] passMap;
+                            break;
+                        }
+                        case TypesPackage::RandomRational: {
+                            PathfindingPackage::RandomMover mover(TypesPackage::Rational);
+                            int** passMap = this->makePassMap();
+                            (*it).move(mover.getNextMove((*it).getCoordinates(), passMap, {this->length, this->height}));
+                            for (int i = 0; i < this->height; i++) {
+                                delete [] passMap[i];
+                            }
+                            delete [] passMap;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            int **Location::makePassMap() {
+                int** passMap = new int* [this->height];
+                for (int i = 0; i < this->height; i++) {
+                    passMap[i] = new int[this->length];
+                }
+                for (int i = 0; i < this->length; i++) {
+                    for (int j = 0 ; j < this->length; j++) {
+                        if (this->locationMap[i][j].isPassable()) {
+                            passMap[i][j] = 0;
+                        } else {
+                            passMap[i][j] = -1;
+                        }
+                    }
+                }
+                return passMap;
             }
         }
     }

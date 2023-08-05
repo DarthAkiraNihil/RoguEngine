@@ -14,8 +14,8 @@ namespace RoguEngine {
         namespace TypesPackage {
             ///Used to represent a type of an entity
             enum EntityType {
-                FuckingSlave, ///TEST
-                Player/// Entity type of Player
+                Player, /// Entity type of Player
+                Monster
             };
         }
     }

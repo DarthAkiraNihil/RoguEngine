@@ -3,7 +3,7 @@
 //
 #include <game/types/randommovermodel.h>
 #include <game/pathfinding/basepathfinder.h>
-#include <game/locations/location.h>
+//#include <game/locations/location.h>
 #include <random>
 
 #ifndef ROGUENGINE_RANDOMMOVER_H
@@ -17,11 +17,11 @@ namespace RoguEngine {
                     TypesPackage::RandomMoverModel modelType;
                 public:
                     explicit RandomMover(TypesPackage::RandomMoverModel modelType);
-                    TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, LocationsPackage::Location* location) override;
+                    TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) override;
 
             };
 
-            TypesPackage::Coordinates RandomMover::getNextMove(TypesPackage::Coordinates source, LocationsPackage::Location* location) {
+            TypesPackage::Coordinates RandomMover::getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) {
                 while (true) {
                     std::random_device randomMoverDevice;
                     std::mt19937 RMGenerator(randomMoverDevice());
@@ -32,13 +32,11 @@ namespace RoguEngine {
                         return direction;
                     } else {
                         if (
-                            (source.x + direction.x < location->getLength()) ||
-                            (source.y + direction.y < location->getHeight()) ||
+                            (source.x + direction.x < locationSize.x) ||
+                            (source.y + direction.y < locationSize.y) ||
                             (source.x + direction.x > 0) ||
                             (source.y + direction.y > 0)) {
-                            LocationsPackage::Tile next = location->getTile(
-                                {source.x + direction.x, source.y + direction.y});
-                            if (next.isPassable()) {
+                            if (passMap[source.y + direction.y][source.x + direction.x] != -1 ){
                                 return direction;
                             } else {
                                 continue;

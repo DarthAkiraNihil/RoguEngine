@@ -9,7 +9,8 @@ namespace RoguEngine {
     namespace GameCore {
         namespace TypesPackage {
             enum MoverType {
-                Random
+                RandomDumb,
+                RandomRational
             };
         }
     }

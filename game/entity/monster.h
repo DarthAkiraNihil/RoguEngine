@@ -27,7 +27,7 @@ namespace RoguEngine {
                     TypesPackage::MoverType getMoverType();
             };
 
-            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType moverType) : Entity(name, TypesPackage::Player, sprite, coordinates) {
+            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType moverType) : Entity(name, TypesPackage::Monster, sprite, coordinates) {
                 this->characteristics.HP = {maxHP, maxHP};
                 this->moverType = moverType;
             }
