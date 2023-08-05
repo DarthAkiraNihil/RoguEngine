@@ -10,5 +10,6 @@
 #include "rgbadata.h"
 #include "limitedpair.h"
 #include "characteristics.h"
+#include "movertype.h"
 
 #endif //ROGUENGINE_AUXILIARY_H

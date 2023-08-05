@@ -2,7 +2,7 @@
 // Created by EgrZver on 05.08.2023.
 //
 #include <game/types/coordinates.h>
-#include <game/entity/monster.h>
+//#include <game/entity/monster.h>
 #include <game/locations/location.h>
 
 #ifndef ROGUENGINE_BASEPATHFINDER_H
@@ -13,7 +13,7 @@ namespace RoguEngine {
         namespace PathfindingPackage {
             class BasePathfinder {
                 public:
-                    virtual TypesPackage::Coordinates getNextMove(EntityPackage::Monster* monster, LocationsPackage::Location* location) = 0;
+                    virtual TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, LocationsPackage::Location* location) = 0;
             };
         }
     }
