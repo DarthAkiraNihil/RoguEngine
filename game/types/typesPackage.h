@@ -8,7 +8,7 @@
 #include "coordinates.h"
 #include "entityType.h"
 #include "rgbadata.h"
-#include "fovstatus.h"
 #include "limitedpair.h"
+#include "characteristics.h"
 
 #endif //ROGUENGINE_AUXILIARY_H

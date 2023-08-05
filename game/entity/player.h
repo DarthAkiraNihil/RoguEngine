@@ -22,7 +22,7 @@ namespace RoguEngine {
                     TypesPackage::EntityType entityType;
                     sf::Sprite sprite;
                     TypesPackage::Coordinates coordinates;
-                    int maxHP;
+                    TypesPackage::PlayerCharacteristics characteristics;
                 public:
                     Player(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates);
                     int getMaxHP();
@@ -36,7 +36,7 @@ namespace RoguEngine {
              * \param coordinates The start coordinates of a player
              */
             Player::Player(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates) : Entity(name, TypesPackage::Player, sprite, coordinates) {
-                this->maxHP = maxHP;
+                this->characteristics.HP = {maxHP, maxHP};
             }
             /**
              * \brief Max HP getter
@@ -44,7 +44,7 @@ namespace RoguEngine {
              * \return The max HP of a player
              */
             int Player::getMaxHP() {
-                return this->maxHP;
+                return this->characteristics.HP.max;
             }
         }
     }
