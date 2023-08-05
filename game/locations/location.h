@@ -53,6 +53,8 @@ namespace RoguEngine {
                     bool getFOVStatusAt(TypesPackage::Coordinates where);
                     bool getVisitedStatusAt(TypesPackage::Coordinates where);
                     void calculateFOV();
+                    auto locationMonstersBegin();
+                    auto locationMonstersEnd();
             };
 
             /**
@@ -394,6 +396,14 @@ namespace RoguEngine {
                     }
                 }
                 return passMap;
+            }
+
+            auto Location::locationMonstersBegin() {
+                return this->locationMonsters.begin();
+            }
+
+            auto Location::locationMonstersEnd() {
+                return this->locationMonsters.end();
             }
         }
     }

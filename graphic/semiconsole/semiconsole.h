@@ -130,6 +130,14 @@ namespace RoguEngine {
                     GameCore::TypesPackage::Coordinates playerCoordinates = location.getAssignedPlayer()->getCoordinates();
                     player.setPosition((where.x + playerCoordinates.x) * 16, (where.y + playerCoordinates.y) * 16);
                     this->window.draw(player);
+                    for (auto it = location.locationMonstersBegin(); it != location.locationMonstersEnd(); it++) {
+                        GameCore::TypesPackage::Coordinates monsterCoordinates = it->getCoordinates();
+                        if (location.getFOVStatusAt((*it).getCoordinates())) {
+                            sf::Sprite tmp = (*it).getSprite();
+                            tmp.setPosition((where.x + monsterCoordinates.x) * 16, (where.y + monsterCoordinates.y) * 16);
+                            this->window.draw(tmp);
+                        }
+                    }
                 }
 
             }
