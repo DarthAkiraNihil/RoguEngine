@@ -5,6 +5,7 @@
 #include <iostream>
 #include <game/types/typesPackage.h>
 #include <game/entity/entity.h>
+#include <game/pathfinding/basepathfinder.h>
 //
 
 #ifndef ROGUENGINE_MONSTER_H
@@ -20,25 +21,27 @@ namespace RoguEngine {
                     sf::Sprite sprite;
                     TypesPackage::Coordinates coordinates;
                     TypesPackage::MonsterCharacteristics characteristics;
-                    TypesPackage::MoverType moverType;
+                    PathfindingPackage::BasePathfinder* mover;
+                    //TypesPackage::MoverType moverType;
                 public:
-                    Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType moverType);
+                    Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, PathfindingPackage::BasePathfinder* mover);
                     int getMaxHP();
-                    TypesPackage::MoverType getMoverType();
+                    TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
             };
 
-            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType moverType) : Entity(name, TypesPackage::Monster, sprite, coordinates) {
+            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, PathfindingPackage::BasePathfinder* mover) : Entity(name, TypesPackage::Monster, sprite, coordinates) {
                 this->characteristics.HP = {maxHP, maxHP};
-                this->moverType = moverType;
+                this->mover = mover;
             }
 
             int Monster::getMaxHP() {
                 return this->characteristics.HP.max;
             }
 
-            TypesPackage::MoverType Monster::getMoverType() {
-                return this->moverType;
+            TypesPackage::Coordinates Monster::getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) {
+                return this->mover->getNextMove(source, passMap, locationSize);
             }
+
         }
     }
 }

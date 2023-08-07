@@ -356,30 +356,14 @@ namespace RoguEngine {
             }
 
             void Location::moveMonsters() {
+                int** passMap = this->makePassMap();
                 for (auto it = this->locationMonsters.begin(); it != this->locationMonsters.end(); it++) {
-                    switch ((*it).getMoverType()) {
-                        case TypesPackage::RandomDumb: {
-                            PathfindingPackage::RandomMover mover(TypesPackage::Dumb);
-                            int** passMap = this->makePassMap();
-                            (*it).move(mover.getNextMove((*it).getCoordinates(), passMap, {this->length, this->height}));
-                            for (int i = 0; i < this->height; i++) {
-                                delete [] passMap[i];
-                            }
-                            delete [] passMap;
-                            break;
-                        }
-                        case TypesPackage::RandomRational: {
-                            PathfindingPackage::RandomMover mover(TypesPackage::Rational);
-                            int** passMap = this->makePassMap();
-                            (*it).move(mover.getNextMove((*it).getCoordinates(), passMap, {this->length, this->height}));
-                            for (int i = 0; i < this->height; i++) {
-                                delete [] passMap[i];
-                            }
-                            delete [] passMap;
-                            break;
-                        }
-                    }
+                    it->move(it->getNextMove(it->getCoordinates(), passMap, {this->length, this->height}));
                 }
+                for (int i = 0; i < this->height; i++) {
+                    delete [] passMap[i];
+                }
+                delete [] passMap;
             }
 
             int **Location::makePassMap() {
