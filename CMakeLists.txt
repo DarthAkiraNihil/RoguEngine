@@ -31,9 +31,11 @@ add_executable(RESCTest testing/sctest.cpp ${SOURCES})
 
 add_executable(RELVTest testing/limptest.cpp ${SOURCES})
 
+add_executable(REAStarTest testing/astartest.cpp ${SOURCES})
+
 target_link_libraries(RESFMLTest sfml-graphics sfml-audio)
 target_link_libraries(RESCTest sfml-graphics sfml-audio fmt::fmt-header-only)
-
+target_link_libraries(REAStarTest sfml-graphics sfml-audio fmt::fmt-header-only)
 
 
 

@@ -32,7 +32,7 @@ namespace RoguEngine {
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Monster> locationMonsters;
                     void doFov(float x, float y);
-                    int** makePassMap();
+
                 public:
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
@@ -55,6 +55,7 @@ namespace RoguEngine {
                     void calculateFOV();
                     auto locationMonstersBegin();
                     auto locationMonstersEnd();
+                    int** makePassMap();
             };
 
             /**
