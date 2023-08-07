@@ -28,26 +28,30 @@ namespace RoguEngine {
                     std::uniform_int_distribution<> directionRandomizer(-1, 1);
                     TypesPackage::Coordinates direction{directionRandomizer(RMGenerator),
                                                         directionRandomizer(RMGenerator)};
-                    if (
-                        (source.x + direction.x < locationSize.x) &&
-                        (source.y + direction.y < locationSize.y) &&
-                        (source.x + direction.x > -1) &&
-                        (source.y + direction.y > -1)) {
-                        switch (this->modelType) {
-                            case TypesPackage::Dumb: {
-                                return direction;
-                            }
-                            case TypesPackage::Rational: {
-                                if (passMap[source.y + direction.y][source.x + direction.x] != -1 ){
+                    if (direction.x == 0 && direction.y == 0) {
+                        continue;
+                    } else {
+                        if (
+                            (source.x + direction.x < locationSize.x) &&
+                            (source.y + direction.y < locationSize.y) &&
+                            (source.x + direction.x > -1) &&
+                            (source.y + direction.y > -1)) {
+                            switch (this->modelType) {
+                                case TypesPackage::Dumb: {
                                     return direction;
-                                } else {
-                                    continue;
+                                }
+                                case TypesPackage::Rational: {
+                                    if (passMap[source.y + direction.y][source.x + direction.x] != -1 ){
+                                        return direction;
+                                    } else {
+                                        continue;
+                                    }
                                 }
                             }
-                        }
 
-                    } else {
-                        continue;
+                        } else {
+                            continue;
+                        }
                     }
                 }
             }
