@@ -1,16 +1,19 @@
 RoguEngine changelog
 
-Version 0.2.0 [not a release] (unfinished)
+Version 0.3.0 [not a release] (unfinished)
 
-* Target: FOV
-* Target: Monsters
-* Optional target (for now): Drawers (for location)
+* Target: pathfinding for monsters
+* Target: all types of movers
+* Target: monster aggression (moving towards a player)
+
+Version 0.2.0 [not a release] (05.08.2023)
 
 * Feature: entity moving at a location
 * Feature: full-color location rendering
 * Feature: rendering a location with entities
 * Feature: FOV using Ray casting, Visited tiles map
 * Feature: Tile transparency
+* Feature: Monsters with random moving
 * Fixed: segmentation fault when creating a location
 * Fixed: inverted directions' coordinates
 * Fixed: dimension inversion when pasting a structure
