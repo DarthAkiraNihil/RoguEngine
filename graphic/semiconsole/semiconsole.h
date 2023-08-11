@@ -36,7 +36,7 @@ namespace RoguEngine {
                     sf::Sprite getChar(int id) {
                         return this->font.getBaseLetter(id);
                     } //todo remove
-                    void renderGameObject(GameCore::LocationsPackage::Location location,
+                    void renderGameObject(GameCore::LocationsPackage::Location& location,
                                           GameCore::TypesPackage::Coordinates where);
 
             };
@@ -102,7 +102,7 @@ namespace RoguEngine {
              * \param location The location to render
              * \param where The coordinates of the left top corner of the location to render
              */
-            void SemiConsole::renderGameObject(GameCore::LocationsPackage::Location location,
+            void SemiConsole::renderGameObject(GameCore::LocationsPackage::Location& location,
                                                GameCore::TypesPackage::Coordinates where) {
                 if ((where.x >= this->windowTileSize.x) || (where.y >= this->windowTileSize.y) || (where.x < 0) || (where.y < 0)) {
                     throw CoreExceptions::InvalidDrawingCoordinatesException("Drawing coordinates out of drawing range");
@@ -110,17 +110,18 @@ namespace RoguEngine {
                     throw CoreExceptions::InvalidDrawingCoordinatesException("Game object will not fit the SemiConsole at this place");
                 } else {
                     for (int i = 0; i < location.getHeight(); i++) {
-                        for (int j = 0; j < location.getLength(); j++) {
-                            if (location.getFOVStatusAt({j, i})) {
-                                sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
-                                tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                                this->window.draw(tmp);
-                            } else if (location.getVisitedStatusAt({j, i})){
-                                sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
-                                tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
-                                tmp.setColor(sf::Color(40, 40, 40, 255));
-                                this->window.draw(tmp);
-                            }
+                        for ( int j = 0; j < location.getLength(); j++) {
+                                if (location.getFOVStatusAt({j, i})) {
+                                    sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
+                                    tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                                    this->window.draw(tmp);
+                                } else if (location.getVisitedStatusAt({j, i})) {
+                                    sf::Sprite tmp = location.getTile({j, i}).getRenderedSprite();
+                                    tmp.setPosition((where.x + j) * 16, (where.y + i) * 16);
+                                    tmp.setColor(sf::Color(40, 40, 40, 255));
+                                    this->window.draw(tmp);
+                                }
+
 
 
 

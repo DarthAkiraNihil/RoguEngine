@@ -18,6 +18,7 @@ namespace RoguEngine {
                 public:
                     explicit RandomMover(TypesPackage::RandomMoverModel modelType);
                     TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) override;
+                    TypesPackage::MoverType getMoverType() override;
 
             };
 
@@ -58,6 +59,10 @@ namespace RoguEngine {
 
             RandomMover::RandomMover(TypesPackage::RandomMoverModel modelType) {
                 this->modelType = modelType;
+            }
+
+            TypesPackage::MoverType RandomMover::getMoverType() {
+                return TypesPackage::Random;
             }
         }
     }

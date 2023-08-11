@@ -10,7 +10,8 @@ namespace RoguEngine {
         namespace TypesPackage {
             enum MoverType {
                 RandomDumb,
-                RandomRational
+                RandomRational,
+                Line
             };
         }
     }

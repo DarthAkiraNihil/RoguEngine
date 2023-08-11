@@ -2,11 +2,13 @@
 // Created by EgrZver on 21.07.2023.
 //
 #include <game/locations/tile.h>
-
+#include <game/types/movertype.h>
 #include <game/types/typesPackage.h>
 #include <game/locations/structure.h>
 #include <game/entity/entityPackage.h>
-#include <game/pathfinding/randommover.h>
+#include <game/pathfinding/astar.h>
+#include <game/pathfinding/linemover_new.h>
+#include <game/pathfinding/pathgenerator.h>
 #include <game/gamecoreexceptions.h>
 #include <iostream>
 #include <vector>
@@ -31,6 +33,8 @@ namespace RoguEngine {
                     //RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Monster> locationMonsters;
+                    PathfindingPackage::AStarPathfinder locationPathfinder;
+                    PathfindingPackage::PathGenerator pathGenerator;
                     void doFov(float x, float y);
 
                 public:
@@ -49,6 +53,7 @@ namespace RoguEngine {
                     void pasteStructure(Structure structure, TypesPackage::Coordinates at);
                     // moveEntity(TypesPackage::Coordinates source, TypesPackage::Coordinates direction);
                     void moveMonsters();
+                    void initializePathFinderAndGenerator();
                     bool movePlayer(TypesPackage::Coordinates direction);
                     bool getFOVStatusAt(TypesPackage::Coordinates where);
                     bool getVisitedStatusAt(TypesPackage::Coordinates where);
@@ -90,6 +95,7 @@ namespace RoguEngine {
                         this->visitedMap[i][j] = false;
                     }
                 }
+                this->assignedPlayer = nullptr;
 
             }
 
@@ -194,6 +200,10 @@ namespace RoguEngine {
                 this->locationMonsters.push_back(monster);
             }
 
+            void Location::initializePathFinderAndGenerator() {
+                this->locationPathfinder.assignLocation(this->makePassMap(), {this->length, this->height});
+                this->pathGenerator.assignLocation(this->makePassMap(), {this->length, this->height});
+            }
             /**
              * \brief Location entity remover
              * \details Standard Location entity remover
@@ -284,8 +294,9 @@ namespace RoguEngine {
             }*/
 
             bool Location::getFOVStatusAt(TypesPackage::Coordinates where) {
-                if (where.x < 0 || where.y < 0 || where.x >= this->length || where.y >= this->height) {
-                    throw CoreExceptions::InvalidFOVPlaceException("Selected place does not exist");
+
+                if ((where.x < 0 )|| (where.y < 0) || (where.x >= this->length) || (where.y >= this->height)) {
+                    throw CoreExceptions::InvalidFOVPlaceException(fmt::format("Selected place does not exist: x: {}, y: {}", where.x, where.y));
                 } else {
                     return this->playerFOV[where.y][where.x];
                 }
@@ -356,14 +367,39 @@ namespace RoguEngine {
             }
 
             void Location::moveMonsters() {
-                int** passMap = this->makePassMap();
-                for (auto it = this->locationMonsters.begin(); it != this->locationMonsters.end(); it++) {
-                    it->move(it->getNextMove(it->getCoordinates(), passMap, {this->length, this->height}));
+                for (auto & locationMonster : this->locationMonsters) {
+                    if (!locationMonster.hasPath()) {
+                        switch (locationMonster.getMoverType()) {
+                            case TypesPackage::RandomDumb: {
+                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateRandomDirectionDumb(locationMonster.getCoordinates());
+
+                                locationMonster.assignPath(path);
+                                break;
+                            }
+                            case TypesPackage::Line: {
+                                std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
+                                std::cout << fmt::format("cp1 [x: {}, y: {}], cp2 [x: {}, y: {}]", cpPair[0].x, cpPair[0].y, cpPair[1].x, cpPair[1].y);
+                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateSinglePath(cpPair[0], cpPair[1]);
+                                std::cout << "Assignation" << std::endl;
+                                locationMonster.assignPath(path);
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
+                    TypesPackage::Coordinates da = {0, 0};
+                    try {
+                        da = locationMonster.getNextMove();
+
+                    } catch (std::out_of_range& ex) {
+                        std::cout << "HERE!";
+                    }
+                    locationMonster.move(da);
+
+
                 }
-                for (int i = 0; i < this->height; i++) {
-                    delete [] passMap[i];
-                }
-                delete [] passMap;
             }
 
             int **Location::makePassMap() {

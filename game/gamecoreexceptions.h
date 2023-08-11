@@ -99,6 +99,27 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    class NoPathException : public std::exception {
+        private:
+            std::string message_;
+        public:
+            explicit NoPathException(const std::string &message);
+
+            const char *what() const noexcept override { return message_.c_str(); }
+    };
+
+    class NoControlPointsException : public std::exception {
+        private:
+            std::string message_;
+        public:
+            explicit NoControlPointsException(const std::string &message);
+
+            const char *what() const noexcept override { return message_.c_str(); }
+    };
+
+    NoControlPointsException::NoControlPointsException(const std::string &message) : message_(message) {}
+
+
     NoEntityFoundException::NoEntityFoundException(const std::string &message) : message_(message) {}
 
     DimensionIncompatibilityException::DimensionIncompatibilityException(const std::string &message) : message_(
@@ -116,6 +137,8 @@ namespace RoguEngine::GameCore::CoreExceptions {
     InvalidFOVPlaceException::InvalidFOVPlaceException(const std::string &message) : message_(message) {}
 
     InvalidLightLevelException::InvalidLightLevelException(const std::string &message) : message_(message) {}
+
+    NoPathException::NoPathException(const std::string &message) : message_(message) {}
 }
 
 
