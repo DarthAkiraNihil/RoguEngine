@@ -56,8 +56,7 @@ namespace RoguEngine {
             std::vector<TypesPackage::Coordinates>
             PathGenerator::generateSinglePath(TypesPackage::Coordinates source, TypesPackage::Coordinates destination) {
                 std::vector<TypesPackage::Coordinates> path = this->pathfinder.findPath(source, destination);
-                std::cout << "path len " << path.size() << std::endl;
-                this->pathfinder.clearCosts();
+                this->pathfinder.clearPathfindingCache();
                 return path;
             }
         }

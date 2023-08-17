@@ -1,7 +1,6 @@
 //
 // Created by EgrZver on 05.08.2023.
 //
-//#include <game/pathfinding/randommover.h>
 #include <iostream>
 #include <vector>
 #include <game/types/typesPackage.h>
@@ -64,14 +63,10 @@ namespace RoguEngine {
             }
 
             void Monster::assignPath(std::vector<TypesPackage::Coordinates>& pathVector) {
-                std::cout << "Entered, path len: " << pathVector.size() << std::endl;
                 for (auto & it : pathVector) {
-                    std::cout << it.x << " " << it.y << std::endl;
                     this->currentPath.push_back(it);
                 }
-
                 this->hasPathIndicator = true;
-
             }
 
             bool Monster::hasPath() {

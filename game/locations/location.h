@@ -10,6 +10,7 @@
 #include <game/pathfinding/linemover_new.h>
 #include <game/pathfinding/pathgenerator.h>
 #include <game/gamecoreexceptions.h>
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include <fmt/format.h>
@@ -335,7 +336,7 @@ namespace RoguEngine {
                     }
                 }
                 for(int i = 0; i < 360; i++) {
-                    this->doFov(cos((float)i*0.01745f), sin((float)i*0.01745f));
+                    this->doFov(std::cos((float)i*0.01745f), std::sin((float)i*0.01745f));
                 }
             }
 
@@ -378,9 +379,7 @@ namespace RoguEngine {
                             }
                             case TypesPackage::Line: {
                                 std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
-                                std::cout << fmt::format("cp1 [x: {}, y: {}], cp2 [x: {}, y: {}]", cpPair[0].x, cpPair[0].y, cpPair[1].x, cpPair[1].y);
                                 std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateSinglePath(cpPair[0], cpPair[1]);
-                                std::cout << "Assignation" << std::endl;
                                 locationMonster.assignPath(path);
                                 break;
                             }
@@ -389,15 +388,7 @@ namespace RoguEngine {
                             }
                         }
                     }
-                    TypesPackage::Coordinates da = {0, 0};
-                    try {
-                        da = locationMonster.getNextMove();
-
-                    } catch (std::out_of_range& ex) {
-                        std::cout << "HERE!";
-                    }
-                    locationMonster.move(da);
-
+                    locationMonster.move(locationMonster.getNextMove());
 
                 }
             }
