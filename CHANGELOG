@@ -6,7 +6,7 @@ Version 0.3.0 [not a release] (unfinished)
 * Target: all types of movers
 * Target: monster aggression (moving towards a player)
 * Feature: A* (AStar) pathfinding class
-* Feature: path generators: RandomDumb, RandomRational (don't move towards an impassable tile), Patrol (using control points), RandomPointEverywhere
+* Feature: path generators: RandomDumb, RandomRational (don't move towards an impassable tile), Patrol (using control points), RandomPointEverywhere, RandomPointRadial
 
 Version 0.2.0 [not a release] (05.08.2023)
 
