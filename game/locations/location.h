@@ -7,7 +7,6 @@
 #include <game/locations/structure.h>
 #include <game/entity/entityPackage.h>
 #include <game/pathfinding/astar.h>
-#include <game/pathfinding/linemover_new.h>
 #include <game/pathfinding/pathgenerator.h>
 #include <game/gamecoreexceptions.h>
 #include <cmath>

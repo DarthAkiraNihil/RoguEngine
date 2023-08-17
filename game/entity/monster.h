@@ -5,7 +5,7 @@
 #include <vector>
 #include <game/types/typesPackage.h>
 #include <game/entity/entity.h>
-#include <game/pathfinding/basepathfinder.h>
+//#include <game/pathfinding/basepathfinder.h>
 #include <game/gamecoreexceptions.h>
 //
 
@@ -22,7 +22,7 @@ namespace RoguEngine {
                     sf::Sprite sprite;
                     TypesPackage::Coordinates coordinates;
                     TypesPackage::MonsterCharacteristics characteristics;
-                    PathfindingPackage::BasePathfinder* mover;
+                    //PathfindingPackage::BasePathfinder* mover;
                     std::vector<TypesPackage::Coordinates> currentPath = {};
                     std::vector<TypesPackage::Coordinates> controlPoints = {};
                     int currentControlPointPair;
@@ -33,7 +33,7 @@ namespace RoguEngine {
                 public:
                     Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType);
                     int getMaxHP();
-                    TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
+                    //TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
                     TypesPackage::Coordinates getNextMove();
                     bool hasPath();
                     void assignPath(std::vector<TypesPackage::Coordinates>& pathVector);
@@ -54,9 +54,9 @@ namespace RoguEngine {
                 return this->characteristics.HP.max;
             }
 
-            TypesPackage::Coordinates Monster::getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) {
-                return this->mover->getNextMove(source, passMap, locationSize);
-            }
+            //TypesPackage::Coordinates Monster::getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize) {
+            //    return this->mover->getNextMove(source, passMap, locationSize);
+            //}
 
             TypesPackage::MoverType Monster::getMoverType() {
                 return this->generator;
