@@ -72,6 +72,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief InvalidMovingCoordinates Exception
+     * \details This exception is thrown when... maybe it's not used for a while?
+     */
     class InvalidMovingCoordinatesException : public std::exception {
         private:
             std::string message_;
@@ -81,6 +85,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief InvalidFOVPlace Exception
+     * \details This exception is thrown when you try to get FOV status of a tile that is out of locaiton range
+     */
     class InvalidFOVPlaceException : public std::exception {
         private:
             std::string message_;
@@ -90,6 +98,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief InvalidLightLevel Exception
+     * \details This exception is thrown when you try to declare location light level as something below zero
+     */
     class InvalidLightLevelException : public std::exception {
         private:
             std::string message_;
@@ -99,6 +111,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief NoPath Exception
+     * \details This exception is thrown when a monster has no its own path and this tries to get the next move
+     */
     class NoPathException : public std::exception {
         private:
             std::string message_;
@@ -108,6 +124,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief NoControlPoints Exception
+     * \details This exception is thrown when you try to get next control points of a monster but if has less than 2 of them
+     */
     class NoControlPointsException : public std::exception {
         private:
             std::string message_;
@@ -117,6 +137,10 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    /**
+     * \brief NoAssignedLocation Exception
+     * \details This exception is thrown when a pathfinder has no assigned location to find path in
+     */
     class NoAssignedLocationException : public std::exception {
         private:
             std::string message_;
