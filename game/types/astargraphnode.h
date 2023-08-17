@@ -12,7 +12,7 @@ namespace RoguEngine {
         namespace TypesPackage {
             struct AStarGraphNode {
                 int cost;
-                std::vector<Coordinates> adjacent;
+                //std::vector<Coordinates> adjacent;
                 Coordinates coordinates;
                 AStarGraphNode* previous;
             };

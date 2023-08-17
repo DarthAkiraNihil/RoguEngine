@@ -20,7 +20,6 @@ namespace RoguEngine {
                     void buildGraph(int** passMap, TypesPackage::Pair size);
                     std::vector<TypesPackage::Coordinates> buildPath(TypesPackage::AStarGraphNode* goal);
                     TypesPackage::Coordinates chooseNode(std::vector<TypesPackage::Coordinates> *reachable, TypesPackage::Coordinates destination);
-                    std::vector<TypesPackage::Coordinates> getAdjacentNodes(TypesPackage::Coordinates node);
 
                 public:
                     ~AStarPathfinder();
@@ -37,51 +36,6 @@ namespace RoguEngine {
                         this->locationGraph[i][j].coordinates = {j, i};
                         this->locationGraph[i][j].cost = passMap[i][j];
                         this->locationGraph[i][j].previous = nullptr;
-                    }
-                }
-
-                for (int i = 0; i < size.y; i++) {
-                    for (int j = 0; j < size.x; j++) {
-                        if (i > 0) {
-                            if (passMap[i - 1][j] != -1) {
-                                this->locationGraph[i][j].adjacent.push_back({j, i - 1});
-                            }
-                        }
-                        if (i < locationSize.y - 1) {
-                            if (passMap[i + 1][j] != -1) {
-                                this->locationGraph[i][j].adjacent.push_back({j, i + 1});
-                            }
-                        }
-                        if (j > 0) {
-                            if (i > 0) {
-                                if (passMap[i - 1][j - 1] != -1) {
-                                    this->locationGraph[i][j].adjacent.push_back({j - 1, i - 1});
-                                }
-                            }
-                            if (i < locationSize.y - 1) {
-                                if (passMap[i + 1][j - 1] != -1) {
-                                    this->locationGraph[i][j].adjacent.push_back({j - 1, i + 1});
-                                }
-                            }
-                            if (passMap[i][j - 1] != -1) {
-                                this->locationGraph[i][j].adjacent.push_back({j - 1, i});
-                            }
-                        }
-                        if (j < locationSize.x - 1) {
-                            if (i > 0) {
-                                if (passMap[i - 1][j + 1] != -1) {
-                                    this->locationGraph[i][j].adjacent.push_back({j + 1, i - 1});
-                                }
-                            }
-                            if (i < locationSize.y - 1) {
-                                if (passMap[i + 1][j + 1] != -1) {
-                                    this->locationGraph[i][j].adjacent.push_back({j + 1, i + 1});
-                                }
-                            }
-                            if (passMap[i][j + 1] != -1) {
-                                this->locationGraph[i][j].adjacent.push_back({j + 1, i});
-                            }
-                        }
                     }
                 }
 
@@ -112,9 +66,6 @@ namespace RoguEngine {
 
             std::vector<TypesPackage::Coordinates> AStarPathfinder::findPath(TypesPackage::Coordinates source, TypesPackage::Coordinates destination) {
                 std::vector<TypesPackage::Coordinates> reachable = {source}, explored = {};
-                for (auto & adj: this->locationGraph[source.y][source.x].adjacent) {
-                    std::cout << fmt::format("adj node x: {}, y: {}", adj.x, adj.y) << std::endl;
-                }
                 while (!reachable.empty()) {
                     TypesPackage::Coordinates node = this->chooseNode(&reachable, destination);
                     if (node == destination) {
@@ -126,9 +77,25 @@ namespace RoguEngine {
                     explored.push_back(node);
 
                     std::vector<TypesPackage::Coordinates> newReachableRaw = {}, newReachable = {};
-                    for (TypesPackage::Coordinates & adjacent: this->getAdjacentNodes(node)) {
-                        newReachableRaw.push_back(adjacent);
+                    for (int i = -1; i < 2; i++) {
+                        for (int j = -1; j < 2; j++) {
+                            if (i != 0 || j != 0) {
+                                if ((node.x + i < this->locationSize.x) &&
+                                    (node.x + i > -1) &&
+                                    (node.y + j < this->locationSize.y) &&
+                                    (node.y + j > -1)) {
+                                    if (this->locationGraph[node.y + j][node.x + i].cost != -1) newReachableRaw.push_back({node.x + i, node.y + j});
+                                }
+                            }
+                        }
                     }
+                    for (TypesPackage::Coordinates & adjacent: newReachableRaw) {
+                        std::cout << fmt::format("Adjacent node: x: {}, y: {}", adjacent.x, adjacent.y) << std::endl;
+                    }
+                    std::cout << "END" << std::endl;
+                    //for (TypesPackage::Coordinates & adjacent: this->getAdjacentNodes(node)) {
+                    //    newReachableRaw.push_back(adjacent);
+                    //}
 
                     for (TypesPackage::Coordinates & rawReachable: newReachableRaw) {
                         bool found = std::find(explored.begin(), explored.end(), rawReachable) != explored.end();
@@ -183,10 +150,6 @@ namespace RoguEngine {
                 return bestNode;
             }
 
-            std::vector<TypesPackage::Coordinates>
-            AStarPathfinder::getAdjacentNodes(TypesPackage::Coordinates node) {
-                return this->locationGraph[node.y][node.x].adjacent;
-            }
         }
     }
 }
