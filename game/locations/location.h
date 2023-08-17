@@ -376,10 +376,23 @@ namespace RoguEngine {
                                 locationMonster.assignPath(path);
                                 break;
                             }
-                            case TypesPackage::Line: {
+                            case TypesPackage::RandomRational: {
+                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateRandomDirectionRational(locationMonster.getCoordinates());
+                                locationMonster.assignPath(path);
+                                break;
+                            }
+                            case TypesPackage::Patrol: {
                                 std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
                                 std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateSinglePath(cpPair[0], cpPair[1]);
                                 locationMonster.assignPath(path);
+                                break;
+                            }
+                            case TypesPackage::RandomPointEverywhere: {
+                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generatePathToRandomPointEverywhere(locationMonster.getCoordinates());
+                                locationMonster.assignPath(path);
+                                break;
+                            }
+                            case TypesPackage::RandomPointRadial: {
                                 break;
                             }
                             default: {

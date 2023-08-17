@@ -11,7 +11,10 @@ namespace RoguEngine {
             enum MoverType {
                 RandomDumb,
                 RandomRational,
-                Line
+                Patrol,
+                RandomPointEverywhere,
+                RandomPointRadial,
+                //RandomLineDirection
             };
         }
     }

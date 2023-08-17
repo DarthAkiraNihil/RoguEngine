@@ -20,12 +20,16 @@ namespace RoguEngine {
                 public:
                     void assignLocation(int** locationPassMap, TypesPackage::Pair locationSize);
                     std::vector<TypesPackage::Coordinates> generateRandomDirectionDumb(TypesPackage::Coordinates source);
+                    std::vector<TypesPackage::Coordinates> generateRandomDirectionRational(TypesPackage::Coordinates source);
                     std::vector<TypesPackage::Coordinates> generateSinglePath(TypesPackage::Coordinates source, TypesPackage::Coordinates destination);
+                    std::vector<TypesPackage::Coordinates> generatePathToRandomPointEverywhere(TypesPackage::Coordinates source);
+                    //std::vector<TypesPackage::Coordinates> generatePathToRandomPointRadial(TypesPackage::Coordinates source, TypesPackage::Pair radialRegionSizes);
                     //std::vector<TypesPackage::Coordinates> generatePathWithRandomDestination(TypesPackage::Coordinates source);
             };
 
             void PathGenerator::assignLocation(int **locationPassMap, TypesPackage::Pair locationSize) {
                 this->passMapSize = locationSize;
+                this->passMap = locationPassMap;
                 this->pathfinder.assignLocation(locationPassMap, locationSize);
             }
 
@@ -59,6 +63,57 @@ namespace RoguEngine {
                 this->pathfinder.clearPathfindingCache();
                 return path;
             }
+
+            std::vector<TypesPackage::Coordinates>
+            PathGenerator::generateRandomDirectionRational(TypesPackage::Coordinates source) {
+                    std::random_device randomMoverDevice;
+                    std::mt19937 RMGenerator(randomMoverDevice());
+                    std::uniform_int_distribution<> directionRandomizer(-1, 1);
+                    while (true) {
+                        TypesPackage::Coordinates direction{directionRandomizer(RMGenerator),
+                                                            directionRandomizer(RMGenerator)};
+                        if (direction.x == 0 && direction.y == 0) {
+                            continue;
+                        } else {
+                            if (
+                                (source.x + direction.x < passMapSize.x) &&
+                                (source.y + direction.y < passMapSize.y) &&
+                                (source.x + direction.x > -1) &&
+                                (source.y + direction.y > -1)) {
+                                if (this->passMap[source.y + direction.y][source.x + direction.x] != -1) return {direction};
+                                continue;
+                            } else {
+                                continue;
+                            }
+                        }
+                    }
+            }
+
+            std::vector<TypesPackage::Coordinates>
+            PathGenerator::generatePathToRandomPointEverywhere(TypesPackage::Coordinates source) {
+                std::random_device randomDeviceX, randomDeviceY;
+                std::mt19937 xGen(randomDeviceX()), yGen(randomDeviceY());
+                std::uniform_int_distribution<> xRandomizer(0, this->passMapSize.x - 1), yRandomizer(0, this->passMapSize.y - 1);
+                TypesPackage::Coordinates rndDest{};
+                while (true) {
+                    rndDest = {xRandomizer(xGen), yRandomizer(yGen)};
+                    if (rndDest == source || this->passMap[rndDest.y][rndDest.x] == -1) {
+                        continue;
+                    } else {
+                        std::vector<TypesPackage::Coordinates> path = this->generateSinglePath(source, rndDest);
+                        if (!path.empty()) {
+                            return path;
+                        }
+                        continue;
+                    }
+                }
+            }
+
+            //std::vector<TypesPackage::Coordinates>
+            //PathGenerator::generatePathToRandomPointRadial(TypesPackage::Coordinates source,
+            //                                               TypesPackage::Pair radialRegionSizes) {
+            //    return std::vector<TypesPackage::Coordinates>();
+            //}
         }
     }
 }
