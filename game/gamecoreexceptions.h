@@ -117,6 +117,17 @@ namespace RoguEngine::GameCore::CoreExceptions {
             const char *what() const noexcept override { return message_.c_str(); }
     };
 
+    class NoAssignedLocationException : public std::exception {
+        private:
+            std::string message_;
+        public:
+            explicit NoAssignedLocationException(const std::string &message);
+
+            const char *what() const noexcept override { return message_.c_str(); }
+    };
+
+    NoAssignedLocationException::NoAssignedLocationException(const std::string &message) : message_(message) {}
+
     NoControlPointsException::NoControlPointsException(const std::string &message) : message_(message) {}
 
 
