@@ -28,16 +28,18 @@ namespace RoguEngine {
                     int currentControlPointPair;
                     bool hasPathIndicator;
                     int currentPathStep;
-
+                    TypesPackage::Pair radialRPParameters;
                     TypesPackage::MoverType generator;
                 public:
                     Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType);
                     int getMaxHP();
+                    TypesPackage::Pair getRadialRandomPointParameters();
                     //TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
                     TypesPackage::Coordinates getNextMove();
                     bool hasPath();
                     void assignPath(std::vector<TypesPackage::Coordinates>& pathVector);
                     void addControlPoint(TypesPackage::Coordinates cp);
+                    void setRadialRandomPointParameters(TypesPackage::Pair parameters);
                     std::vector<TypesPackage::Coordinates> getNextControlPoints();
                     TypesPackage::MoverType getMoverType();
             };
@@ -107,6 +109,14 @@ namespace RoguEngine {
                         return pair;
                     }
                 }
+            }
+
+            void Monster::setRadialRandomPointParameters(TypesPackage::Pair parameters) {
+                this->radialRPParameters = parameters;
+            }
+
+            TypesPackage::Pair Monster::getRadialRandomPointParameters() {
+                return this->radialRPParameters;
             }
 
         }

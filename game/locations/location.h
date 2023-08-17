@@ -315,7 +315,7 @@ namespace RoguEngine {
                 float oy = (float) this->assignedPlayer->getCoordinates().y+0.5f;
                 for(int i = 0; i < this->lightLevel; i++) {
                     if ((int) oy >= 0 && (int) ox >= 0 && (int) oy < this->height && (int) ox < this->length) {
-                        this->playerFOV[(int) oy][(int) ox] = true;//Set the tile to visible.
+                        this->playerFOV[(int) oy][(int) ox] = true;
                         if (!this->visitedMap[(int) oy][(int) ox]) this->visitedMap[(int) oy][(int) ox] = true;
                         if(!this->locationMap[(int) oy][(int) ox].isTrasparent()) return;
                         ox+=x;
@@ -393,6 +393,9 @@ namespace RoguEngine {
                                 break;
                             }
                             case TypesPackage::RandomPointRadial: {
+                                TypesPackage::Pair params = locationMonster.getRadialRandomPointParameters();
+                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generatePathToRandomPointRadial(locationMonster.getCoordinates(), params.y, params.x);
+                                locationMonster.assignPath(path);
                                 break;
                             }
                             default: {

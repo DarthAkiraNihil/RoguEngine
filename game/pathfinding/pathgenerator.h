@@ -23,7 +23,7 @@ namespace RoguEngine {
                     std::vector<TypesPackage::Coordinates> generateRandomDirectionRational(TypesPackage::Coordinates source);
                     std::vector<TypesPackage::Coordinates> generateSinglePath(TypesPackage::Coordinates source, TypesPackage::Coordinates destination);
                     std::vector<TypesPackage::Coordinates> generatePathToRandomPointEverywhere(TypesPackage::Coordinates source);
-                    //std::vector<TypesPackage::Coordinates> generatePathToRandomPointRadial(TypesPackage::Coordinates source, TypesPackage::Pair radialRegionSizes);
+                    std::vector<TypesPackage::Coordinates> generatePathToRandomPointRadial(TypesPackage::Coordinates source, int outerCircleRadius, int innerCircleRadius);
                     //std::vector<TypesPackage::Coordinates> generatePathWithRandomDestination(TypesPackage::Coordinates source);
             };
 
@@ -109,11 +109,31 @@ namespace RoguEngine {
                 }
             }
 
-            //std::vector<TypesPackage::Coordinates>
-            //PathGenerator::generatePathToRandomPointRadial(TypesPackage::Coordinates source,
-            //                                               TypesPackage::Pair radialRegionSizes) {
-            //    return std::vector<TypesPackage::Coordinates>();
-            //}
+            std::vector<TypesPackage::Coordinates>
+            PathGenerator::generatePathToRandomPointRadial(TypesPackage::Coordinates source,
+                                                           int outerCircleRadius,
+                                                           int innerCircleRadius) {
+                std::random_device randomDeviceX, randomDeviceY;
+                std::mt19937 xGen(randomDeviceX()), yGen(randomDeviceY());
+                std::uniform_int_distribution<> xRandomizer((source.x - outerCircleRadius) > -1 ? source.x - outerCircleRadius : 0,
+                                                            (source.x + outerCircleRadius) < this->passMapSize.x ? source.x + outerCircleRadius : this->passMapSize.x - 1),
+                                                yRandomizer((source.y - outerCircleRadius) > -1 ? source.y - outerCircleRadius : 0,
+                                                            (source.x + outerCircleRadius) < this->passMapSize.y ? source.x + outerCircleRadius : this->passMapSize.y - 1);
+                TypesPackage::Coordinates rndDest{};
+                while (true) {
+                    rndDest = {xRandomizer(xGen), yRandomizer(yGen)};
+                    int distance = (int) std::sqrt(std::pow(rndDest.x, 2) + std::pow(rndDest.y, 2));
+                    if (rndDest == source || this->passMap[rndDest.y][rndDest.x] == -1 || !((distance <= outerCircleRadius) || (distance >= innerCircleRadius))) {
+                        continue;
+                    } else {
+                        std::vector<TypesPackage::Coordinates> path = this->generateSinglePath(source, rndDest);
+                        if (!path.empty()) {
+                            return path;
+                        }
+                        continue;
+                    }
+                }
+            }
         }
     }
 }
