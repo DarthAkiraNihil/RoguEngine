@@ -19,14 +19,17 @@ namespace RoguEngine {
              */
             class Entity {
                 public:
-                    Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates);
+                    Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates, int visionRange);
                     std::wstring getName();
                     TypesPackage::EntityType getType();
                     sf::Sprite getSprite();
                     TypesPackage::Coordinates getCoordinates();
+                    int getVisionRange();
+                    int setVisionRange(int range);
                     void setCoordinates(TypesPackage::Coordinates newCoordinates);
                     void move(TypesPackage::Coordinates direction);
                 private:
+                    int visionRange;
                     std::wstring name;
                     TypesPackage::EntityType entityType;
                     sf::Sprite sprite;
@@ -41,11 +44,12 @@ namespace RoguEngine {
              * \param symbol The symbol of an entity. Will be used in rendering
              * \param coordinates The start coordinates of an entity
              */
-            Entity::Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates) {
+            Entity::Entity(std::wstring name, TypesPackage::EntityType entityType, sf::Sprite sprite, TypesPackage::Coordinates coordinates, int visionRange) {
                 this->name = name;
                 this->entityType = entityType;
                 this->sprite = sprite;
                 this->coordinates = coordinates;
+                this->visionRange = visionRange;
             }
             /**
              * \brief Name getter
@@ -96,6 +100,14 @@ namespace RoguEngine {
             void Entity::move(TypesPackage::Coordinates direction) {
                 this->coordinates.x += direction.x;
                 this->coordinates.y += direction.y;
+            }
+
+            int Entity::setVisionRange(int range) {
+                return this->visionRange = range;
+            }
+
+            int Entity::getVisionRange() {
+                return this->visionRange;
             }
         }
     }

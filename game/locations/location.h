@@ -313,7 +313,7 @@ namespace RoguEngine {
             void Location::doFov(float x, float y) {
                 float ox = (float) this->assignedPlayer->getCoordinates().x+0.5f;
                 float oy = (float) this->assignedPlayer->getCoordinates().y+0.5f;
-                for(int i = 0; i < this->lightLevel; i++) {
+                for(int i = 0; i < ((this->lightLevel <= this->assignedPlayer->getVisionRange()) ? this->lightLevel : this->assignedPlayer->getVisionRange()); i++) {
                     if ((int) oy >= 0 && (int) ox >= 0 && (int) oy < this->height && (int) ox < this->length) {
                         this->playerFOV[(int) oy][(int) ox] = true;
                         if (!this->visitedMap[(int) oy][(int) ox]) this->visitedMap[(int) oy][(int) ox] = true;

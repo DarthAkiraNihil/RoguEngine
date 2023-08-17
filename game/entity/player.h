@@ -24,7 +24,7 @@ namespace RoguEngine {
                     TypesPackage::Coordinates coordinates;
                     TypesPackage::PlayerCharacteristics characteristics;
                 public:
-                    Player(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates);
+                    Player(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, int visionRange);
                     int getMaxHP();
             };
             /**
@@ -35,7 +35,7 @@ namespace RoguEngine {
              * \param maxHP The max level of HP
              * \param coordinates The start coordinates of a player
              */
-            Player::Player(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates) : Entity(name, TypesPackage::Player, sprite, coordinates) {
+            Player::Player(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, int visionRange) : Entity(name, TypesPackage::Player, sprite, coordinates, visionRange) {
                 this->characteristics.HP = {maxHP, maxHP};
             }
             /**

@@ -31,7 +31,7 @@ namespace RoguEngine {
                     TypesPackage::Pair radialRPParameters;
                     TypesPackage::MoverType generator;
                 public:
-                    Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType);
+                    Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, int visionRange);
                     int getMaxHP();
                     TypesPackage::Pair getRadialRandomPointParameters();
                     //TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
@@ -44,7 +44,7 @@ namespace RoguEngine {
                     TypesPackage::MoverType getMoverType();
             };
 
-            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType) : Entity(name, TypesPackage::Monster, sprite, coordinates) {
+            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, int visionRange) : Entity(name, TypesPackage::Monster, sprite, coordinates, visionRange) {
                 this->characteristics.HP = {maxHP, maxHP};
                 this->hasPathIndicator = false;
                 this->currentPathStep = 0;
