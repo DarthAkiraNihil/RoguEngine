@@ -24,6 +24,7 @@ namespace RoguEngine {
                     std::vector<TypesPackage::Coordinates> generateSinglePath(TypesPackage::Coordinates source, TypesPackage::Coordinates destination);
                     std::vector<TypesPackage::Coordinates> generatePathToRandomPointEverywhere(TypesPackage::Coordinates source);
                     std::vector<TypesPackage::Coordinates> generatePathToRandomPointRadial(TypesPackage::Coordinates source, int outerCircleRadius, int innerCircleRadius);
+                    std::vector<TypesPackage::Coordinates> generateDirectionToTarget(TypesPackage::Coordinates source, TypesPackage::Coordinates target);
                     //std::vector<TypesPackage::Coordinates> generatePathWithRandomDestination(TypesPackage::Coordinates source);
             };
 
@@ -133,6 +134,13 @@ namespace RoguEngine {
                         continue;
                     }
                 }
+            }
+
+            std::vector<TypesPackage::Coordinates>
+            PathGenerator::generateDirectionToTarget(TypesPackage::Coordinates source,
+                                                      TypesPackage::Coordinates target) {
+                std::vector<TypesPackage::Coordinates> path = this->generateSinglePath(source, target);
+                return {path[0]};
             }
         }
     }

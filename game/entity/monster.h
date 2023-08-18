@@ -48,6 +48,8 @@ namespace RoguEngine {
                     void trigger();
                     void untrigger();
 
+                    void clearPath();
+
                     TypesPackage::AggressiveMoverType getAggressiveMoverType();
                     void setTarget(Entity* targetPointer);
                     Entity* getTarget();
@@ -83,6 +85,7 @@ namespace RoguEngine {
             }
 
             void Monster::assignPath(std::vector<TypesPackage::Coordinates>& pathVector) {
+                if (!this->currentPath.empty()) this->currentPath.clear();
                 for (auto & it : pathVector) {
                     this->currentPath.push_back(it);
                 }
@@ -147,6 +150,7 @@ namespace RoguEngine {
 
             void Monster::untrigger() {
                 this->isTriggeredNow = false;
+                this->target = nullptr;
             }
 
             TypesPackage::AggressiveMoverType Monster::getAggressiveMoverType() {
@@ -159,6 +163,12 @@ namespace RoguEngine {
 
             Entity* Monster::getTarget() {
                 return this->target;
+            }
+
+            void Monster::clearPath() {
+                if (!this->currentPath.empty()) this->currentPath.clear();
+                this->hasPathIndicator = false;
+                this->currentPathStep = 0;
             }
 
         }

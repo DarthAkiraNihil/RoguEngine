@@ -371,44 +371,54 @@ namespace RoguEngine {
 
             void Location::moveMonsters() {
                 for (auto & locationMonster : this->locationMonsters) {
-                    if (locationMonster.isTriggered()) {
-                        std::cout << "Triggered: " << fmt::format("tx: {}, ty: {}", locationMonster.getTarget()->getCoordinates().x, locationMonster.getTarget()->getCoordinates().y) << std::endl;
-                    }
+                    std::vector<TypesPackage::Coordinates> path;
                     if (!locationMonster.hasPath()) {
-                        switch (locationMonster.getMoverType()) {
-                            case TypesPackage::RandomDumb: {
-                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateRandomDirectionDumb(locationMonster.getCoordinates());
-
-                                locationMonster.assignPath(path);
-                                break;
+                        if (locationMonster.isTriggered()) {
+                            switch (locationMonster.getAggressiveMoverType()) {
+                                case TypesPackage::AbsoluteAccurate: {
+                                    path = this->pathGenerator.generateDirectionToTarget(locationMonster.getCoordinates(), locationMonster.getTarget()->getCoordinates());
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
                             }
-                            case TypesPackage::RandomRational: {
-                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateRandomDirectionRational(locationMonster.getCoordinates());
-                                locationMonster.assignPath(path);
-                                break;
-                            }
-                            case TypesPackage::Patrol: {
-                                std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
-                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generateSinglePath(cpPair[0], cpPair[1]);
-                                locationMonster.assignPath(path);
-                                break;
-                            }
-                            case TypesPackage::RandomPointEverywhere: {
-                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generatePathToRandomPointEverywhere(locationMonster.getCoordinates());
-                                locationMonster.assignPath(path);
-                                break;
-                            }
-                            case TypesPackage::RandomPointRadial: {
-                                TypesPackage::Pair params = locationMonster.getRadialRandomPointParameters();
-                                std::vector<TypesPackage::Coordinates> path = this->pathGenerator.generatePathToRandomPointRadial(locationMonster.getCoordinates(), params.y, params.x);
-                                locationMonster.assignPath(path);
-                                break;
-                            }
-                            default: {
-                                break;
+                        } else {
+                            switch (locationMonster.getMoverType()) {
+                                case TypesPackage::RandomDumb: {
+                                    path = this->pathGenerator.generateRandomDirectionDumb(locationMonster.getCoordinates());
+                                    break;
+                                }
+                                case TypesPackage::RandomRational: {
+                                    path = this->pathGenerator.generateRandomDirectionRational(
+                                        locationMonster.getCoordinates());
+                                    break;
+                                }
+                                case TypesPackage::Patrol: {
+                                    std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
+                                    path = this->pathGenerator.generateSinglePath(
+                                        cpPair[0], cpPair[1]);
+                                    break;
+                                }
+                                case TypesPackage::RandomPointEverywhere: {
+                                    path = this->pathGenerator.generatePathToRandomPointEverywhere(
+                                        locationMonster.getCoordinates());
+                                    break;
+                                }
+                                case TypesPackage::RandomPointRadial: {
+                                    TypesPackage::Pair params = locationMonster.getRadialRandomPointParameters();
+                                    path = this->pathGenerator.generatePathToRandomPointRadial(
+                                        locationMonster.getCoordinates(), params.y, params.x);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
                             }
                         }
+                        locationMonster.assignPath(path);
                     }
+
                     locationMonster.move(locationMonster.getNextMove());
 
                     TypesPackage::Coordinates playerCoord = this->assignedPlayer->getCoordinates();
@@ -416,7 +426,17 @@ namespace RoguEngine {
                     if (this->monsterFOV[playerCoord.y][playerCoord.x]) {
                         locationMonster.trigger();
                         locationMonster.setTarget(this->assignedPlayer);
+                        locationMonster.clearPath();
                     }
+                    // todo COLLISION CHECK
+
+
+
+
+
+
+
+
                     //std::cout << fmt::format("DISTANCE: Taxi: {}, Euclid: {}", abs(m.x - p.x) + abs(m.y - p.y), std::sqrt(std::pow(m.x - p.x, 2) + std::pow(m.y - p.y, 2))) << std::endl;
 
                 }
