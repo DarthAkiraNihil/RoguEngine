@@ -17,27 +17,41 @@ namespace RoguEngine {
         namespace EntityPackage {
             class Monster: public Entity {
                 private:
-                    TypesPackage::MonsterCharacteristics characteristics;
+                    TypesPackage::MonsterCharacteristics characteristics{};
                     std::vector<TypesPackage::Coordinates> currentPath = {};
                     std::vector<TypesPackage::Coordinates> controlPoints = {};
                     int currentControlPointPair;
                     bool hasPathIndicator;
                     int currentPathStep;
-                    TypesPackage::Pair radialRPParameters;
+                    TypesPackage::Pair radialRPParameters{};
                     TypesPackage::MoverType generator;
 
                     bool isTriggeredNow;
+                    TypesPackage::AggressiveMoverType aggressiveMoverType;
+                    Entity* target;
 
                 public:
-                    Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, int visionRange);
+                    Monster(std::wstring name,
+                            sf::Sprite sprite,
+                            int maxHP,
+                            TypesPackage::Coordinates coordinates,
+                            TypesPackage::MoverType generatorType,
+                            TypesPackage::AggressiveMoverType toTargetMover,
+                            int visionRange);
                     int getMaxHP();
                     TypesPackage::Pair getRadialRandomPointParameters();
                     //TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
                     TypesPackage::Coordinates getNextMove();
                     bool hasPath();
+
                     bool isTriggered();
                     void trigger();
                     void untrigger();
+
+                    TypesPackage::AggressiveMoverType getAggressiveMoverType();
+                    void setTarget(Entity* targetPointer);
+                    Entity* getTarget();
+
                     void assignPath(std::vector<TypesPackage::Coordinates>& pathVector);
                     void addControlPoint(TypesPackage::Coordinates cp);
                     void setRadialRandomPointParameters(TypesPackage::Pair parameters);
@@ -45,13 +59,15 @@ namespace RoguEngine {
                     TypesPackage::MoverType getMoverType();
             };
 
-            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, int visionRange) : Entity(name, TypesPackage::Monster, sprite, coordinates, visionRange) {
+            Monster::Monster(std::wstring name, sf::Sprite sprite, int maxHP, TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, TypesPackage::AggressiveMoverType toTargetMover, int visionRange) : Entity(name, TypesPackage::Monster, sprite, coordinates, visionRange) {
                 this->characteristics.HP = {maxHP, maxHP};
                 this->hasPathIndicator = false;
                 this->currentPathStep = 0;
                 this->currentControlPointPair = 0;
                 this->generator = generatorType;
                 this->isTriggeredNow = false;
+                this->aggressiveMoverType = toTargetMover;
+                this->target = nullptr;
             }
 
             int Monster::getMaxHP() {
@@ -131,6 +147,18 @@ namespace RoguEngine {
 
             void Monster::untrigger() {
                 this->isTriggeredNow = false;
+            }
+
+            TypesPackage::AggressiveMoverType Monster::getAggressiveMoverType() {
+                return this->aggressiveMoverType;
+            }
+
+            void Monster::setTarget(RoguEngine::GameCore::EntityPackage::Entity *targetPointer) {
+                this->target = targetPointer;
+            }
+
+            Entity* Monster::getTarget() {
+                return this->target;
             }
 
         }

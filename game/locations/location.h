@@ -29,13 +29,15 @@ namespace RoguEngine {
                 private:
                     int height, length, lightLevel;
                     Tile** locationMap;
-                    bool** playerFOV, **visitedMap;
+                    bool** playerFOV, **visitedMap, **monsterFOV;
                     //RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Monster> locationMonsters;
                     PathfindingPackage::AStarPathfinder locationPathfinder;
                     PathfindingPackage::PathGenerator pathGenerator;
                     void doFov(float x, float y);
+                    void doFovMonster(float x, float y, EntityPackage::Monster* who);
+                    void calculateFOVForMonster(EntityPackage::Monster* monster);
 
                 public:
                     explicit Location(TypesPackage::Pair size);
@@ -58,6 +60,7 @@ namespace RoguEngine {
                     bool getFOVStatusAt(TypesPackage::Coordinates where);
                     bool getVisitedStatusAt(TypesPackage::Coordinates where);
                     void calculateFOV();
+
                     auto locationMonstersBegin();
                     auto locationMonstersEnd();
                     int** makePassMap();
@@ -87,12 +90,15 @@ namespace RoguEngine {
                 }
 
                 this->visitedMap = new bool* [height];
+                this->monsterFOV = new bool* [height];
                 for (int i = 0; i < height; i++) {
                     this->visitedMap[i] = new bool[length];
+                    this->monsterFOV[i] = new bool[length];
                 }
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < length; j++) {
                         this->visitedMap[i][j] = false;
+                        this->monsterFOV[i][j] = false;
                     }
                 }
                 this->assignedPlayer = nullptr;
@@ -368,6 +374,9 @@ namespace RoguEngine {
 
             void Location::moveMonsters() {
                 for (auto & locationMonster : this->locationMonsters) {
+                    if (locationMonster.isTriggered()) {
+                        std::cout << "Triggered: " << fmt::format("tx: {}, ty: {}", locationMonster.getTarget()->getCoordinates().x, locationMonster.getTarget()->getCoordinates().y) << std::endl;
+                    }
                     if (!locationMonster.hasPath()) {
                         switch (locationMonster.getMoverType()) {
                             case TypesPackage::RandomDumb: {
@@ -405,6 +414,14 @@ namespace RoguEngine {
                     }
                     locationMonster.move(locationMonster.getNextMove());
 
+                    TypesPackage::Coordinates playerCoord = this->assignedPlayer->getCoordinates();
+                    this->calculateFOVForMonster(&locationMonster);
+                    if (this->monsterFOV[playerCoord.y][playerCoord.x]) {
+                        locationMonster.trigger();
+                        locationMonster.setTarget(this->assignedPlayer);
+                    }
+                    //std::cout << fmt::format("DISTANCE: Taxi: {}, Euclid: {}", abs(m.x - p.x) + abs(m.y - p.y), std::sqrt(std::pow(m.x - p.x, 2) + std::pow(m.y - p.y, 2))) << std::endl;
+
                 }
             }
 
@@ -431,6 +448,32 @@ namespace RoguEngine {
 
             auto Location::locationMonstersEnd() {
                 return this->locationMonsters.end();
+            }
+
+            void Location::doFovMonster(float x, float y, EntityPackage::Monster *who) {
+                float ox = (float) who->getCoordinates().x+0.5f;
+                float oy = (float) who->getCoordinates().y+0.5f;
+                for(int i = 0; i < ((this->lightLevel <= who->getVisionRange()) ? this->lightLevel : who->getVisionRange()); i++) {
+                    if ((int) oy >= 0 && (int) ox >= 0 && (int) oy < this->height && (int) ox < this->length) {
+                        this->monsterFOV[(int) oy][(int) ox] = true;
+                        if(!this->locationMap[(int) oy][(int) ox].isTrasparent()) return;
+                        ox+=x;
+                        oy+=y;
+                    } else {
+                        return;
+                    }
+                }
+            }
+
+            void Location::calculateFOVForMonster(EntityPackage::Monster *monster) {
+                for (int i = 0; i < this->height; i++) {
+                    for (int j = 0; j < this->length; j++) {
+                        this->monsterFOV[i][j] = false;
+                    }
+                }
+                for(int i = 0; i < 360; i++) {
+                    this->doFovMonster(std::cos((float)i*0.01745f), std::sin((float)i*0.01745f), monster);
+                }
             }
         }
     }
