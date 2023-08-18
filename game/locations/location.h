@@ -29,7 +29,7 @@ namespace RoguEngine {
                 private:
                     int height, length, lightLevel;
                     Tile** locationMap;
-                    bool** playerFOV, **visitedMap, **monsterFOV;
+
                     //RoguEnigine::GameCore::TypesPackage::VisitedStatus** visitedMap;
                     EntityPackage::Player* assignedPlayer;
                     std::vector<EntityPackage::Monster> locationMonsters;
@@ -40,6 +40,7 @@ namespace RoguEngine {
                     void calculateFOVForMonster(EntityPackage::Monster* monster);
 
                 public:
+                    bool** playerFOV, **visitedMap, **monsterFOV; /// TEST
                     explicit Location(TypesPackage::Pair size);
                     Tile getTile(TypesPackage::Coordinates coordinates);
                     EntityPackage::Monster getMonsterFromPlace(TypesPackage::Coordinates coordinates);
@@ -396,6 +397,7 @@ namespace RoguEngine {
                                 }
                                 case TypesPackage::Patrol: {
                                     std::vector<TypesPackage::Coordinates> cpPair = locationMonster.getNextControlPoints();
+                                    if (locationMonster.afterUntriggering()) cpPair[0] = locationMonster.getCoordinates();
                                     path = this->pathGenerator.generateSinglePath(
                                         cpPair[0], cpPair[1]);
                                     break;
@@ -426,6 +428,9 @@ namespace RoguEngine {
                     if (this->monsterFOV[playerCoord.y][playerCoord.x]) {
                         locationMonster.trigger();
                         locationMonster.setTarget(this->assignedPlayer);
+                        locationMonster.clearPath();
+                    } else if (locationMonster.isTriggered()){
+                        locationMonster.untrigger();
                         locationMonster.clearPath();
                     }
                     // todo COLLISION CHECK

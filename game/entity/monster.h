@@ -26,7 +26,7 @@ namespace RoguEngine {
                     TypesPackage::Pair radialRPParameters{};
                     TypesPackage::MoverType generator;
 
-                    bool isTriggeredNow;
+                    bool isTriggeredNow, afterUntriggeringMark;
                     TypesPackage::AggressiveMoverType aggressiveMoverType;
                     Entity* target;
 
@@ -45,6 +45,7 @@ namespace RoguEngine {
                     bool hasPath();
 
                     bool isTriggered();
+                    bool afterUntriggering();
                     void trigger();
                     void untrigger();
 
@@ -70,6 +71,7 @@ namespace RoguEngine {
                 this->isTriggeredNow = false;
                 this->aggressiveMoverType = toTargetMover;
                 this->target = nullptr;
+                this->afterUntriggeringMark = false;
             }
 
             int Monster::getMaxHP() {
@@ -151,6 +153,7 @@ namespace RoguEngine {
             void Monster::untrigger() {
                 this->isTriggeredNow = false;
                 this->target = nullptr;
+                this->afterUntriggeringMark = true;
             }
 
             TypesPackage::AggressiveMoverType Monster::getAggressiveMoverType() {
@@ -169,6 +172,12 @@ namespace RoguEngine {
                 if (!this->currentPath.empty()) this->currentPath.clear();
                 this->hasPathIndicator = false;
                 this->currentPathStep = 0;
+            }
+
+            bool Monster::afterUntriggering() {
+                bool mark = this->afterUntriggeringMark;
+                this->afterUntriggeringMark = false;
+                return mark;
             }
 
         }
