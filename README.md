@@ -18,10 +18,7 @@ The engine will include 3 parts (maybe more):
 ## TODO (current priority)
 
 * GUI
-* Maps (pasting structures + rendering)
 * Monsters
-* Moving
-* FOV and Pathfinding (for enemies)
 * Combat
 * Item system
 * Saving
