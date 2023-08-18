@@ -17,12 +17,7 @@ namespace RoguEngine {
         namespace EntityPackage {
             class Monster: public Entity {
                 private:
-                    std::wstring name;
-                    TypesPackage::EntityType entityType;
-                    sf::Sprite sprite;
-                    TypesPackage::Coordinates coordinates;
                     TypesPackage::MonsterCharacteristics characteristics;
-                    //PathfindingPackage::BasePathfinder* mover;
                     std::vector<TypesPackage::Coordinates> currentPath = {};
                     std::vector<TypesPackage::Coordinates> controlPoints = {};
                     int currentControlPointPair;
@@ -30,6 +25,9 @@ namespace RoguEngine {
                     int currentPathStep;
                     TypesPackage::Pair radialRPParameters;
                     TypesPackage::MoverType generator;
+
+                    bool isTriggeredNow;
+
                 public:
                     Monster(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, TypesPackage::MoverType generatorType, int visionRange);
                     int getMaxHP();
@@ -37,6 +35,9 @@ namespace RoguEngine {
                     //TypesPackage::Coordinates getNextMove(TypesPackage::Coordinates source, int** passMap, TypesPackage::Pair locationSize);
                     TypesPackage::Coordinates getNextMove();
                     bool hasPath();
+                    bool isTriggered();
+                    void trigger();
+                    void untrigger();
                     void assignPath(std::vector<TypesPackage::Coordinates>& pathVector);
                     void addControlPoint(TypesPackage::Coordinates cp);
                     void setRadialRandomPointParameters(TypesPackage::Pair parameters);
@@ -50,6 +51,7 @@ namespace RoguEngine {
                 this->currentPathStep = 0;
                 this->currentControlPointPair = 0;
                 this->generator = generatorType;
+                this->isTriggeredNow = false;
             }
 
             int Monster::getMaxHP() {
@@ -117,6 +119,18 @@ namespace RoguEngine {
 
             TypesPackage::Pair Monster::getRadialRandomPointParameters() {
                 return this->radialRPParameters;
+            }
+
+            bool Monster::isTriggered() {
+                return this->isTriggeredNow;
+            }
+
+            void Monster::trigger() {
+                this->isTriggeredNow = true;
+            }
+
+            void Monster::untrigger() {
+                this->isTriggeredNow = false;
             }
 
         }

@@ -16,6 +16,13 @@ namespace RoguEngine {
                 RandomPointRadial,
                 //RandomLineDirection
             };
+
+            enum AggressiveMoverType {
+                PriorityDirection,
+                AntType,
+                SemiAntType,
+                AbsoluteAccurate
+            };
         }
     }
 }

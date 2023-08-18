@@ -188,6 +188,8 @@ namespace RoguEngine {
             TypesPackage::Coordinates AStarPathfinder::chooseNode(std::vector<TypesPackage::Coordinates> *reachable, TypesPackage::Coordinates destination) {
                 int minCost = 10000000; TypesPackage::Coordinates bestNode = {-1, -1};
                 for (TypesPackage::Coordinates & node: *reachable) {
+                    //int startCost = this->locationGraph[node.y][node.x].cost,
+                    //    goalCost = (int) std::sqrt(std::pow(destination.x - node.y, 2) + std::pow(destination.y - node.y, 2));
                     int startCost = this->locationGraph[node.y][node.x].cost,
                         goalCost = abs(destination.x - node.x) +
                                             abs(destination.y - node.y);

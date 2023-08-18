@@ -18,11 +18,7 @@ namespace RoguEngine {
              */
             class Player: public Entity {
                 private:
-                    std::wstring name;
-                    TypesPackage::EntityType entityType;
-                    sf::Sprite sprite;
-                    TypesPackage::Coordinates coordinates;
-                    TypesPackage::PlayerCharacteristics characteristics;
+                    TypesPackage::PlayerCharacteristics characteristics{};
                 public:
                     Player(std::wstring name, sf::Sprite sprite, int maxHP,  TypesPackage::Coordinates coordinates, int visionRange);
                     int getMaxHP();

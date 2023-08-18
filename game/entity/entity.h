@@ -28,7 +28,7 @@ namespace RoguEngine {
                     int setVisionRange(int range);
                     void setCoordinates(TypesPackage::Coordinates newCoordinates);
                     void move(TypesPackage::Coordinates direction);
-                private:
+                protected:
                     int visionRange;
                     std::wstring name;
                     TypesPackage::EntityType entityType;
