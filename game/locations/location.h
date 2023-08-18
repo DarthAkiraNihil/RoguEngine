@@ -76,31 +76,28 @@ namespace RoguEngine {
                 this->length = size.x;
                 this->lightLevel = 1;
                 this->locationMap = new Tile* [height];
+
                 for (int i = 0; i < height; i++) {
                     this->locationMap[i] = new Tile[length];
                 }
                 this->playerFOV = new bool* [height];
-                for (int i = 0; i < height; i++) {
-                    this->playerFOV[i] = new bool[length];
-                }
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < length; j++) {
-                        this->playerFOV[i][j] = false;
-                    }
-                }
-
                 this->visitedMap = new bool* [height];
                 this->monsterFOV = new bool* [height];
+
                 for (int i = 0; i < height; i++) {
+                    this->playerFOV[i] = new bool[length];
                     this->visitedMap[i] = new bool[length];
                     this->monsterFOV[i] = new bool[length];
                 }
+
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < length; j++) {
+                        this->playerFOV[i][j] = false;
                         this->visitedMap[i][j] = false;
                         this->monsterFOV[i][j] = false;
                     }
                 }
+
                 this->assignedPlayer = nullptr;
 
             }
